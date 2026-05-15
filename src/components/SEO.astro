@@ -17,7 +17,7 @@ interface Props {
 const {
   title = `${SITE.name} · Eventos y Banquetería en Chile | 25 años`,
   description = SITE.description,
-  image = `${SITE.url}/assets/og-image.svg`,
+  image = `${SITE.url}/og-image.jpg`,
   canonical = Astro.url.href,
   schemas = [],
 } = Astro.props;
@@ -48,6 +48,8 @@ const {
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={image} />
+<meta property="og:image:secure_url" content={image} />
+<meta property="og:image:type" content="image/jpeg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content={`${SITE.name} Eventos Gastronómicos — Especialistas en carnes`} />

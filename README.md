@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="src/assets/logo.svg" alt="Fertomart" width="320" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="src/assets/logo-readme-dark.svg" />
+    <img src="src/assets/logo.svg" alt="Fertomart" width="320" />
+  </picture>
 </p>
 
 # Fertomart Landing · Astro + Tailwind
