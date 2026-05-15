@@ -7,7 +7,7 @@
 export const SITE = {
   name: 'Fertomart',
   legalName: 'Servicios Gastronómicos y Eventos Fertomart SpA',
-  url: 'https://fertomart.cl',
+  url: 'https://fertomart-landing.vercel.app',
   description:
     'Servicios gastronómicos y banquetería Fertomart SpA. 25 años organizando matrimonios, cumpleaños y eventos corporativos. Especialistas en carnes.',
   shortDescription:

@@ -6,8 +6,9 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   // IMPORTANTE: define `site` para que sitemap y URLs canónicas funcionen.
-  // Cámbialo si el dominio definitivo es otro.
-  site: 'https://fertomart.cl',
+  // Cuando se active el dominio definitivo (fertomart.cl), cambiarlo aquí
+  // y en src/data/site.ts (SITE.url).
+  site: 'https://fertomart-landing.vercel.app',
 
   integrations: [
     sitemap({
