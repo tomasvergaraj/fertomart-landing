@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 90" role="img" aria-label="Fertomart — Eventos Gastronómicos">
+  <defs>
+    <linearGradient id="flameMain" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#7A1F2B"/>
+      <stop offset="60%" stop-color="#B8473A"/>
+      <stop offset="100%" stop-color="#C9A961"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Monograma FTM dentro de un círculo elegante -->
+  <g transform="translate(8, 10)">
+    <circle cx="35" cy="35" r="34" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="35" cy="35" r="30" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.5"/>
+
+    <!-- Pequeña llama decorativa arriba -->
+    <path d="M 35 8 C 33 11, 32 13, 33.5 15 C 32 14.2, 31.5 13, 32 11.5 C 31 13, 30.5 14.5, 32 16 C 31 15.5, 30.8 14.5, 31 13.5 C 30 15, 31 17, 33 17.5 L 37 17.5 C 39 17, 40 15, 39 13.5 C 39 14.5, 38.5 15.5, 37.5 16 C 39 14.5, 38.5 13, 38 11.5 C 38.5 13, 38 14.2, 36.5 15 C 38 13, 37 11, 35 8 Z"
+          fill="url(#flameMain)"/>
+
+    <!-- Monograma FTM en serif didone -->
+    <g font-family="'Fraunces', 'Playfair Display', 'Bodoni Moda', Georgia, serif"
+       font-weight="500" fill="currentColor" text-anchor="middle">
+      <text x="15.5" y="47" font-size="24" letter-spacing="-0.5">F</text>
+      <text x="35" y="47" font-size="32" letter-spacing="-0.5">T</text>
+      <text x="51.5" y="47" font-size="24" letter-spacing="-0.5">M</text>
+    </g>
+
+    <line x1="26" y1="54" x2="44" y2="54" stroke="currentColor" stroke-width="0.4" opacity="0.55"/>
+    <text x="35" y="60" font-family="'Manrope', sans-serif" font-size="3.5"
+          font-weight="500" letter-spacing="0.8" text-anchor="middle"
+          fill="currentColor" opacity="0.65">EST. 2000</text>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(95, 0)" fill="currentColor">
+    <text x="0" y="42" font-family="'Fraunces', 'Playfair Display', Georgia, serif"
+          font-size="28" font-weight="500" letter-spacing="2">FERTOMART</text>
+    <line x1="0" y1="52" x2="200" y2="52" stroke="currentColor" stroke-width="0.5" opacity="0.4"/>
+    <text x="0" y="68" font-family="'Manrope', 'Helvetica Neue', sans-serif"
+          font-size="9" font-weight="400" letter-spacing="4">EVENTOS GASTRONÓMICOS</text>
+  </g>
+</svg>

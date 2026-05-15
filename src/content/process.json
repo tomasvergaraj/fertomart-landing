@@ -1,0 +1,26 @@
+[
+  {
+    "id": "cotizacion",
+    "order": 1,
+    "title": "Cotización",
+    "text": "Nos cuentas tu evento (fecha, invitados, presupuesto). Te enviamos una propuesta clara, sin compromiso, en menos de 48 horas."
+  },
+  {
+    "id": "diseno",
+    "order": 2,
+    "title": "Diseño del menú",
+    "text": "Definimos juntos los cortes, guarniciones y formato del servicio según el estilo de tu fiesta."
+  },
+  {
+    "id": "evento",
+    "order": 3,
+    "title": "Día del evento",
+    "text": "Llegamos con tiempo, montamos, servimos y respondemos a cada detalle. Tú solo disfrutas."
+  },
+  {
+    "id": "cierre",
+    "order": 4,
+    "title": "Cierre",
+    "text": "Levantamos, dejamos todo impecable y nos retiramos. Cero preocupaciones para ti y tus invitados."
+  }
+]

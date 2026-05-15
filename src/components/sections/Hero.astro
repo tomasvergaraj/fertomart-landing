@@ -1,0 +1,195 @@
+---
+/**
+ * Hero principal con animaciones de entrada escalonadas (CSS keyframes).
+ * Fondo con gradientes radiales + grain SVG inline.
+ */
+import Icon from '~/components/ui/Icon.astro';
+import { CONTACT } from '~/data/site';
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__grain" aria-hidden="true"></div>
+
+  <div class="container hero__content">
+    <div class="hero__overline">
+      <span class="hero__line"></span>
+      <span>Desde el año 2000 · 25 años de tradición</span>
+    </div>
+
+    <h1 id="hero-title" class="hero__title">
+      El sabor del <em>fuego</em>,<br />
+      la elegancia del <em>servicio</em>.
+    </h1>
+
+    <p class="hero__subtitle">
+      Servicios gastronómicos y banquetería para los momentos que importan.
+      Especialistas en carnes y eventos a la medida en Chile.
+    </p>
+
+    <div class="hero__actions">
+      <a href="#contacto" class="btn btn--primary">
+        Cotiza tu evento
+        <Icon name="arrow-right" size={16} />
+      </a>
+      <a href={`tel:${CONTACT.phone}`} class="btn btn--ghost" aria-label={`Llamar al ${CONTACT.phoneDisplay}`}>
+        <Icon name="phone" size={16} />
+        {CONTACT.phoneDisplay}
+      </a>
+    </div>
+  </div>
+
+  <div class="container hero__stats" aria-label="Datos de la empresa">
+    <div class="stat">
+      <span class="stat__num">25</span>
+      <span class="stat__label">Años de<br />experiencia</span>
+    </div>
+    <div class="stat">
+      <span class="stat__num">+1.000</span>
+      <span class="stat__label">Eventos<br />realizados</span>
+    </div>
+    <div class="stat">
+      <span class="stat__num">100%</span>
+      <span class="stat__label">Compromiso<br />en cada servicio</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding: 4rem 0 3rem;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero__bg {
+    position: absolute;
+    inset: -10%;
+    z-index: -2;
+    background:
+      radial-gradient(ellipse at 80% 15%, rgba(184, 71, 58, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 10% 80%, rgba(201, 169, 97, 0.22) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 100%, rgba(122, 31, 43, 0.08) 0%, transparent 60%);
+  }
+  .hero__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(15, 14, 12, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 14, 12, 0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .hero__grain {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.4;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  }
+
+  .hero__content {
+    position: relative;
+  }
+
+  .hero__overline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-wine);
+    font-weight: 600;
+    margin-bottom: 1.75rem;
+    animation: fadeUp 0.8s var(--ease);
+  }
+  .hero__line {
+    width: 32px;
+    height: 1px;
+    background: var(--color-wine);
+  }
+
+  .hero__title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.4rem, 9vw, 5.5rem);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.75rem;
+    animation: fadeUp 1s var(--ease) 0.1s both;
+  }
+  .hero__title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-wine);
+    position: relative;
+  }
+
+  .hero__subtitle {
+    font-size: clamp(1.0625rem, 2vw, 1.25rem);
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    max-width: 540px;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 1s var(--ease) 0.2s both;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 5.5rem;
+    animation: fadeUp 1s var(--ease) 0.3s both;
+  }
+
+  .hero__stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding-top: 3.25rem;
+    border-top: 1px solid var(--color-line);
+    position: relative;
+    animation: fadeUp 1s var(--ease) 0.4s both;
+  }
+  .hero__stats::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 56px;
+    height: 1px;
+    background: var(--color-wine);
+  }
+
+  @media (min-width: 600px) {
+    .hero__stats {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .stat__num {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    line-height: 1;
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+  .stat__label {
+    font-size: 0.8125rem;
+    color: var(--color-ink-soft);
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+  }
+</style>

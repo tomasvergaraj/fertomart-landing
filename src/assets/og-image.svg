@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Fertomart — Eventos Gastronómicos">
+  <defs>
+    <linearGradient id="ogBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1A1612"/>
+      <stop offset="100%" stop-color="#0F0E0C"/>
+    </linearGradient>
+    <radialGradient id="ogGlow1" cx="0.85" cy="0.2" r="0.6">
+      <stop offset="0%" stop-color="#7A1F2B" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#7A1F2B" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ogGlow2" cx="0.1" cy="0.9" r="0.55">
+      <stop offset="0%" stop-color="#C9A961" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#C9A961" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ogFlame" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#B8473A"/>
+      <stop offset="100%" stop-color="#D9BC7A"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#ogBg)"/>
+  <rect width="1200" height="630" fill="url(#ogGlow1)"/>
+  <rect width="1200" height="630" fill="url(#ogGlow2)"/>
+
+  <!-- Marco dorado interior -->
+  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="#C9A961" stroke-width="1" opacity="0.35"/>
+
+  <!-- Llama decorativa central-arriba -->
+  <g transform="translate(600, 110) scale(2.6)">
+    <path d="M 0 -28 C -3 -22, -5 -18, -2.5 -14 C -5 -15.5, -6 -18, -5.5 -21 C -7 -18, -7.5 -15, -5 -12.5 C -7 -13.3, -7.5 -14.5, -7 -15.5 C -8.8 -13, -7 -10.2, -4 -9.5 L 4 -9.5 C 7 -10.2, 8.8 -13, 7 -15.5 C 7.5 -14.5, 7 -13.3, 5 -12.5 C 7.5 -15, 7 -18, 5.5 -21 C 6 -18, 5 -15.5, 2.5 -14 C 5 -18, 3 -22, 0 -28 Z"
+          fill="url(#ogFlame)"/>
+  </g>
+
+  <!-- Eyebrow -->
+  <text x="600" y="225"
+        font-family="'Manrope', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="20"
+        font-weight="600"
+        fill="#C9A961"
+        text-anchor="middle"
+        letter-spacing="6">DESDE EL AÑO 2000  ·  25 AÑOS DE TRADICIÓN</text>
+
+  <!-- Título -->
+  <text x="600" y="335"
+        font-family="'Fraunces', 'Playfair Display', 'Bodoni Moda', Georgia, serif"
+        font-size="92"
+        font-weight="500"
+        fill="#F4E9D8"
+        text-anchor="middle"
+        letter-spacing="-2">El sabor del <tspan font-style="italic" fill="#D9BC7A">fuego</tspan>,</text>
+  <text x="600" y="430"
+        font-family="'Fraunces', 'Playfair Display', 'Bodoni Moda', Georgia, serif"
+        font-size="92"
+        font-weight="500"
+        fill="#F4E9D8"
+        text-anchor="middle"
+        letter-spacing="-2">la elegancia del <tspan font-style="italic" fill="#D9BC7A">servicio</tspan>.</text>
+
+  <!-- Línea separadora -->
+  <line x1="540" y1="475" x2="660" y2="475" stroke="#C9A961" stroke-width="1" opacity="0.6"/>
+
+  <!-- Subtítulo -->
+  <text x="600" y="515"
+        font-family="'Manrope', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="22"
+        font-weight="500"
+        fill="#F4E9D8"
+        opacity="0.85"
+        text-anchor="middle"
+        letter-spacing="2">EVENTOS GASTRONÓMICOS · BANQUETERÍA · ESPECIALISTAS EN CARNES</text>
+
+  <!-- Wordmark inferior -->
+  <text x="600" y="560"
+        font-family="'Fraunces', 'Playfair Display', Georgia, serif"
+        font-size="26"
+        font-weight="500"
+        fill="#C9A961"
+        text-anchor="middle"
+        letter-spacing="10">FERTOMART  ·  CHILE</text>
+</svg>

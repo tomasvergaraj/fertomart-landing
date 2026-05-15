@@ -1,0 +1,190 @@
+---
+/**
+ * Especialidad: carnes — sección oscura con círculo rotando.
+ * El círculo solo gira cuando está en viewport (IntersectionObserver al final).
+ */
+import SectionHead from '~/components/ui/SectionHead.astro';
+---
+
+<section class="specialty" id="especialidad" aria-labelledby="specialty-title">
+  <div class="container specialty__inner">
+    <div class="specialty__text reveal">
+      <SectionHead
+        eyebrow="Nuestra especialidad"
+        id="specialty-title"
+        titleVariant="light"
+      >
+        Todo tipo de <em>carnes</em>,<br />
+        cocinadas con criterio.
+      </SectionHead>
+      <p class="specialty__lead">
+        Veinticinco años aprendiendo el oficio. Conocemos los tiempos, los cortes
+        y el punto exacto. Esa experiencia es lo que separa un buen evento
+        de uno inolvidable.
+      </p>
+
+      <ul class="specialty__list" role="list">
+        <li>Parrilla en vivo y asados al estilo chileno</li>
+        <li>Cortes premium y selección de carnes nacionales</li>
+        <li>Acompañamientos y guarniciones de elaboración propia</li>
+        <li>Servicio profesional con personal capacitado</li>
+      </ul>
+    </div>
+
+    <div class="specialty__visual reveal" aria-hidden="true">
+      <div class="specialty__circle">
+        <span class="specialty__years">25</span>
+        <span class="specialty__years-label">años<br />cocinando<br />tradición</span>
+      </div>
+      <div class="specialty__deco specialty__deco--1"></div>
+      <div class="specialty__deco specialty__deco--2"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .specialty {
+    padding: var(--space-section) 0;
+    background: var(--color-ink);
+    color: var(--color-bg);
+    position: relative;
+    overflow: hidden;
+  }
+  .specialty::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 60%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(122, 31, 43, 0.4) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .specialty__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    position: relative;
+  }
+  .specialty__text :global(.eyebrow) {
+    color: var(--color-gold);
+  }
+  .specialty__lead {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    margin: 1.75rem 0 2rem;
+    color: rgba(244, 233, 216, 0.85);
+    max-width: 540px;
+  }
+  .specialty__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+  .specialty__list li {
+    position: relative;
+    padding-left: 1.75rem;
+    font-size: 0.9375rem;
+    color: rgba(244, 233, 216, 0.85);
+  }
+  .specialty__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.625rem;
+    width: 12px;
+    height: 1px;
+    background: var(--color-gold);
+  }
+  .specialty__visual {
+    position: relative;
+    width: min(100%, 340px);
+    aspect-ratio: 1 / 1;
+    margin: 2.5rem auto 1rem;
+    justify-self: center;
+  }
+  .specialty__circle {
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-gold);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: radial-gradient(circle, rgba(122, 31, 43, 0.3) 0%, transparent 70%);
+  }
+  .specialty__years {
+    font-family: var(--font-serif);
+    font-size: clamp(5rem, 18vw, 9rem);
+    font-weight: 300;
+    line-height: 1;
+    color: var(--color-gold);
+    font-style: italic;
+  }
+  .specialty__years-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.6;
+    color: rgba(244, 233, 216, 0.7);
+  }
+  .specialty__deco {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--color-gold);
+    opacity: 0.3;
+  }
+  .specialty__deco--1 {
+    inset: -20px;
+    border-style: dashed;
+    animation: rotate 60s linear infinite;
+    animation-play-state: paused;
+  }
+  .specialty.is-in-view .specialty__deco--1 {
+    animation-play-state: running;
+  }
+  .specialty__deco--2 {
+    inset: -45px;
+    opacity: 0.15;
+  }
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @media (min-width: 960px) {
+    .specialty__inner {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .specialty__visual {
+      margin: 0;
+      width: 100%;
+      max-width: 420px;
+      justify-self: end;
+    }
+  }
+</style>
+
+<script>
+  // Pausa la rotación cuando la sección no está visible para ahorrar CPU.
+  const specialty = document.querySelector<HTMLElement>('.specialty');
+  if (specialty && 'IntersectionObserver' in window) {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          specialty.classList.toggle('is-in-view', entry.isIntersecting);
+        });
+      },
+      { threshold: 0.05 }
+    );
+    obs.observe(specialty);
+  }
+</script>

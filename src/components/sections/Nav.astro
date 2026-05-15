@@ -1,0 +1,555 @@
+---
+/**
+ * Navegación principal.
+ * - Desktop: links inline en la barra sticky.
+ * - Móvil: drawer separado que se monta fuera del flujo y se oculta con
+ *   visibility:hidden cuando está cerrado (evita overflow horizontal en iOS).
+ */
+import { Image } from 'astro:assets';
+import logo from '~/assets/logo.svg';
+import { NAV_LINKS, SOCIAL, SITE } from '~/data/site';
+import Icon from '~/components/ui/Icon.astro';
+---
+
+<header class="nav" role="banner">
+  <div class="nav__inner container">
+    <a href="#inicio" class="nav__logo" aria-label={`${SITE.name} — Inicio`}>
+      <Image src={logo} alt={`${SITE.name} Eventos Gastronómicos`} width={220} height={58} loading="eager" />
+    </a>
+
+    <nav class="nav__desktop" aria-label="Navegación principal">
+      {NAV_LINKS.map((link) => (
+        <a href={link.href} data-spy={link.spy} class="nav__link">{link.label}</a>
+      ))}
+
+      <div class="nav__socials" role="group" aria-label="Redes sociales">
+        <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer" aria-label={`Instagram de ${SITE.name}`} class="nav__social">
+          <Icon name="instagram" size={18} />
+        </a>
+        <a href={SOCIAL.facebook} target="_blank" rel="noopener noreferrer" aria-label={`Facebook de ${SITE.name}`} class="nav__social">
+          <Icon name="facebook" size={18} />
+        </a>
+      </div>
+
+      <a href="#contacto" class="nav__cta">Cotizar</a>
+    </nav>
+
+    <button class="nav__burger" id="nav-burger" type="button" aria-label="Abrir menú" aria-controls="nav-drawer" aria-expanded="false">
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<div class="drawer" id="nav-drawer" aria-hidden="true">
+  <div class="drawer__backdrop" data-close></div>
+  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menú de navegación" tabindex="-1">
+    <div class="drawer__head">
+      <span class="drawer__brand">{SITE.name}</span>
+      <button class="drawer__close" type="button" aria-label="Cerrar menú" data-close>
+        <Icon name="close" size={22} />
+      </button>
+    </div>
+
+    <nav class="drawer__nav" aria-label="Navegación principal móvil">
+      {NAV_LINKS.map((link, i) => (
+        <a href={link.href} data-spy={link.spy} class="drawer__link" style={`--i:${i}`}>
+          <span class="drawer__link-num">{String(i + 1).padStart(2, '0')}</span>
+          <span class="drawer__link-label">{link.label}</span>
+        </a>
+      ))}
+    </nav>
+
+    <div class="drawer__foot">
+      <a href="#contacto" class="drawer__cta" data-close>Cotizar evento</a>
+      <div class="drawer__socials" role="group" aria-label="Redes sociales">
+        <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer" aria-label={`Instagram de ${SITE.name}`} class="drawer__social">
+          <Icon name="instagram" size={20} />
+        </a>
+        <a href={SOCIAL.facebook} target="_blank" rel="noopener noreferrer" aria-label={`Facebook de ${SITE.name}`} class="drawer__social">
+          <Icon name="facebook" size={20} />
+        </a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<style>
+  /* ===== Header sticky ===== */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(244, 233, 216, 0.78);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border-bottom: 1px solid var(--color-line);
+    transition: background 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+  .nav.is-scrolled {
+    background: rgba(244, 233, 216, 0.92);
+    box-shadow: 0 1px 28px -10px rgba(15, 14, 12, 0.18);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 1.25rem;
+  }
+
+  .nav__logo {
+    color: var(--color-ink);
+    display: block;
+    flex-shrink: 0;
+  }
+  .nav__logo :global(img) {
+    height: 44px;
+    width: auto;
+  }
+
+  /* ===== Desktop links ===== */
+  .nav__desktop {
+    display: none;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  @media (min-width: 900px) {
+    .nav__desktop {
+      display: flex;
+    }
+  }
+
+  .nav__link {
+    position: relative;
+    padding: 0.5rem 0;
+    color: var(--color-ink);
+    transition: color 0.3s var(--ease);
+  }
+  .nav__link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--color-wine);
+    transition: width 0.4s var(--ease);
+  }
+  .nav__link:hover::after,
+  .nav__link.is-active::after {
+    width: 100%;
+  }
+  .nav__link.is-active {
+    color: var(--color-wine);
+  }
+
+  .nav__socials {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .nav__social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    color: var(--color-ink);
+    transition: color 0.3s var(--ease), background-color 0.3s var(--ease), transform 0.2s var(--ease);
+  }
+  .nav__social:hover {
+    color: var(--color-wine);
+    background: rgba(122, 31, 43, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .nav__cta {
+    padding: 0.6rem 1.1rem;
+    background: var(--color-ink);
+    color: var(--color-bg);
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: background-color 0.3s var(--ease), transform 0.2s var(--ease);
+  }
+  .nav__cta:hover {
+    background: var(--color-wine);
+    transform: translateY(-1px);
+  }
+
+  /* ===== Hamburger ===== */
+  .nav__burger {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 44px;
+    height: 44px;
+    padding: 0 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  .nav__burger span {
+    display: block;
+    height: 1.5px;
+    background: var(--color-ink);
+    border-radius: 1px;
+    transition: transform 0.35s var(--ease), opacity 0.2s var(--ease), width 0.3s var(--ease);
+    transform-origin: center;
+  }
+  .nav__burger span:nth-child(2) {
+    width: 70%;
+    margin-left: auto;
+  }
+  .nav__burger[aria-expanded='true'] span:nth-child(1) {
+    transform: translateY(3.75px) rotate(45deg);
+  }
+  .nav__burger[aria-expanded='true'] span:nth-child(2) {
+    width: 100%;
+    transform: translateY(-3.75px) rotate(-45deg);
+  }
+  @media (min-width: 900px) {
+    .nav__burger {
+      display: none;
+    }
+  }
+
+  /* ===== Drawer (móvil) =====
+     Clave anti-overflow: cuando está cerrado, el contenedor entero está
+     visibility:hidden, así nada de su interior puede empujar el layout. */
+  .drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .drawer.is-open {
+    visibility: visible;
+    pointer-events: auto;
+  }
+  @media (min-width: 900px) {
+    .drawer {
+      display: none;
+    }
+  }
+
+  .drawer__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 14, 12, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity 0.35s var(--ease);
+  }
+  .drawer.is-open .drawer__backdrop {
+    opacity: 1;
+  }
+
+  .drawer__panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(88vw, 400px);
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg);
+    box-shadow: -24px 0 60px -20px rgba(15, 14, 12, 0.35);
+    transform: translate3d(100%, 0, 0);
+    transition: transform 0.45s var(--ease);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    outline: none;
+  }
+  .drawer.is-open .drawer__panel {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .drawer__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .drawer__brand {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+  .drawer__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: transparent;
+    color: var(--color-ink);
+    cursor: pointer;
+    border-radius: 999px;
+    transition: background-color 0.25s var(--ease), color 0.25s var(--ease);
+  }
+  .drawer__close:hover {
+    background: rgba(122, 31, 43, 0.08);
+    color: var(--color-wine);
+  }
+
+  .drawer__nav {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.5rem 1.25rem;
+  }
+  .drawer__link {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: color 0.25s var(--ease);
+  }
+  .drawer__link:last-child {
+    border-bottom: none;
+  }
+  .drawer.is-open .drawer__link {
+    animation: drawerLinkIn 0.5s var(--ease) forwards;
+    animation-delay: calc(var(--i, 0) * 60ms + 150ms);
+  }
+  .drawer__link:hover,
+  .drawer__link.is-active {
+    color: var(--color-wine);
+  }
+  .drawer__link-num {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: var(--color-wine);
+    flex-shrink: 0;
+    transform: translateY(-2px);
+  }
+  .drawer__link-label {
+    flex: 1;
+  }
+
+  .drawer__foot {
+    margin-top: auto;
+    padding: 1.5rem;
+    border-top: 1px solid var(--color-line);
+    background: var(--color-bg-deep);
+  }
+  .drawer__cta {
+    display: block;
+    text-align: center;
+    padding: 0.95rem 1.4rem;
+    background: var(--color-ink);
+    color: var(--color-bg);
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: background-color 0.3s var(--ease);
+  }
+  .drawer__cta:hover {
+    background: var(--color-wine);
+  }
+  .drawer__socials {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  .drawer__social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    color: var(--color-ink);
+    transition: color 0.25s var(--ease), background-color 0.25s var(--ease);
+  }
+  .drawer__social:hover {
+    color: var(--color-wine);
+    background: rgba(122, 31, 43, 0.08);
+  }
+
+  @keyframes drawerLinkIn {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .drawer__panel,
+    .drawer__backdrop,
+    .drawer__link {
+      transition: none;
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Nav: scroll state, drawer móvil con focus trap, scroll-spy y smooth scroll.
+   */
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FOCUSABLE =
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+  const $ = <T extends Element = Element>(sel: string, ctx: ParentNode = document) =>
+    ctx.querySelector<T>(sel);
+  const $$ = <T extends Element = Element>(sel: string, ctx: ParentNode = document) =>
+    Array.from(ctx.querySelectorAll<T>(sel));
+
+  const nav = $<HTMLElement>('.nav');
+  const burger = $<HTMLButtonElement>('#nav-burger');
+  const drawer = $<HTMLElement>('#nav-drawer');
+  const panel = drawer ? $<HTMLElement>('.drawer__panel', drawer) : null;
+  let prevFocus: HTMLElement | null = null;
+
+  const getNavHeight = () => (nav ? nav.offsetHeight : 0);
+
+  // Smooth scroll para anchors internos
+  $$<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
+      const id = anchor.getAttribute('href');
+      if (!id || id.length <= 1) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.pageYOffset - getNavHeight() - 8;
+      window.scrollTo({ top, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      closeDrawer();
+    });
+  });
+
+  // Estado scrolled del header
+  let lastScrolledFlag: boolean | null = null;
+  const onScroll = () => {
+    const scrolled = window.pageYOffset > 10;
+    if (scrolled !== lastScrolledFlag) {
+      nav?.classList.toggle('is-scrolled', scrolled);
+      lastScrolledFlag = scrolled;
+    }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Focus trap del drawer
+  function trapFocus(e: KeyboardEvent) {
+    if (!drawer || !drawer.classList.contains('is-open')) return;
+    if (e.key !== 'Tab') return;
+    const items = $$<HTMLElement>(FOCUSABLE, drawer);
+    if (!items.length) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  function openDrawer() {
+    if (!drawer) return;
+    prevFocus = document.activeElement as HTMLElement;
+    drawer.classList.add('is-open');
+    drawer.setAttribute('aria-hidden', 'false');
+    burger?.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('is-locked');
+    requestAnimationFrame(() => panel?.focus());
+    document.addEventListener('keydown', trapFocus);
+  }
+
+  function closeDrawer() {
+    if (!drawer) return;
+    const wasOpen = drawer.classList.contains('is-open');
+    drawer.classList.remove('is-open');
+    drawer.setAttribute('aria-hidden', 'true');
+    burger?.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('is-locked');
+    document.removeEventListener('keydown', trapFocus);
+    if (wasOpen && prevFocus?.focus) {
+      prevFocus.focus();
+      prevFocus = null;
+    }
+  }
+
+  burger?.addEventListener('click', () => {
+    drawer?.classList.contains('is-open') ? closeDrawer() : openDrawer();
+  });
+
+  // Cualquier elemento con data-close cierra el drawer
+  $$<HTMLElement>('[data-close]', drawer ?? document).forEach((el) => {
+    el.addEventListener('click', closeDrawer);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const lb = document.getElementById('lightbox');
+    if (lb && lb.classList.contains('is-open')) return; // lightbox lo maneja
+    closeDrawer();
+  });
+
+  // Cerrar al pasar a desktop
+  const mqDesktop = window.matchMedia('(min-width: 900px)');
+  const onMqChange = (ev: MediaQueryListEvent | MediaQueryList) => {
+    if (ev.matches) closeDrawer();
+  };
+  if (mqDesktop.addEventListener) mqDesktop.addEventListener('change', onMqChange);
+  else mqDesktop.addListener(onMqChange);
+
+  // Scroll-spy: cubre tanto los links desktop como los del drawer
+  const spyLinks = $$<HTMLAnchorElement>('a[data-spy]');
+  const spyTargets = spyLinks
+    .map((link) => {
+      const id = link.getAttribute('data-spy');
+      const section = id ? document.getElementById(id) : null;
+      return section ? { link, section } : null;
+    })
+    .filter((x): x is { link: HTMLAnchorElement; section: HTMLElement } => Boolean(x));
+
+  if (spyTargets.length && 'IntersectionObserver' in window) {
+    const spy = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const activeId = (entry.target as HTMLElement).id;
+          spyTargets.forEach((t) => {
+            t.link.classList.toggle('is-active', t.link.getAttribute('data-spy') === activeId);
+          });
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+    );
+    // Observamos cada sección una sola vez (no por cada link duplicado)
+    const unique = new Set<HTMLElement>();
+    spyTargets.forEach((t) => unique.add(t.section));
+    unique.forEach((section) => spy.observe(section));
+  }
+</script>

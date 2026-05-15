@@ -1,0 +1,50 @@
+[
+  {
+    "id": "anticipacion",
+    "order": 1,
+    "question": "¿Con cuánta anticipación debo reservar?",
+    "answer": "Lo ideal es reservar con al menos 30 días de anticipación, especialmente para matrimonios y eventos de fin de año. Para eventos chicos y según disponibilidad, podemos atender con menos tiempo."
+  },
+  {
+    "id": "cobertura",
+    "order": 2,
+    "question": "¿Atienden en todo Chile?",
+    "answer": "Sí. Nuestra base está en Hijuelas, Región de Valparaíso, y nos trasladamos a otras regiones del país. La movilización se cotiza según ubicación, cantidad de invitados y duración del servicio."
+  },
+  {
+    "id": "pago",
+    "order": 3,
+    "question": "¿Cómo se realiza el pago?",
+    "answer": "Trabajamos con un abono inicial al confirmar la fecha (reserva) y el saldo se cancela días antes del evento. Aceptamos transferencia bancaria y emitimos factura o boleta a nombre de la persona o empresa."
+  },
+  {
+    "id": "incluye",
+    "order": 4,
+    "question": "¿Qué incluye exactamente el servicio?",
+    "answer": "Cada cotización detalla qué incluye, pero típicamente cubrimos: menú según modalidad elegida, vajilla, mantelería, mozos uniformados, montaje, servicio durante el evento y limpieza al cierre. La barra de bebidas y los postres pueden incluirse o cotizarse aparte."
+  },
+  {
+    "id": "alergias",
+    "order": 5,
+    "question": "¿Trabajan con menús vegetarianos, sin gluten o alergias?",
+    "answer": "Sí. Adaptamos los menús a requerimientos especiales: vegetarianos, veganos, sin gluten, sin lácteos o alergias específicas. Solo necesitamos saberlo con anticipación para planificar los reemplazos sin sorpresas."
+  },
+  {
+    "id": "bebidas",
+    "order": 6,
+    "question": "¿Qué pasa con el alcohol y las bebidas?",
+    "answer": "Podemos incluir la barra completa de bebidas con bartender, o trabajar bajo modalidad 'el cliente pone las bebidas y nosotros las servimos'. Conversamos contigo cuál opción te conviene según presupuesto y cantidad de invitados."
+  },
+  {
+    "id": "imprevistos",
+    "order": 7,
+    "question": "¿Qué sucede si llueve o hay un imprevisto?",
+    "answer": "Planificamos contingencias desde la primera reunión: zonas techadas para la parrilla, alternativas de servicio bajo cubierta y horarios flexibles. Para eventos al aire libre siempre recomendamos un plan B con carpa o salón cerrado."
+  },
+  {
+    "id": "minimo",
+    "order": 8,
+    "question": "¿Hay un mínimo de invitados?",
+    "answer": "Trabajamos desde 30 invitados aproximadamente. Para eventos más íntimos podemos coordinar igualmente, pero la modalidad y el costo por persona varía. No tenemos tope máximo: hemos atendido eventos de más de 500 personas."
+  }
+]

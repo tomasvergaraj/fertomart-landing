@@ -1,0 +1,50 @@
+[
+  {
+    "id": "banquete-formal",
+    "order": 1,
+    "title": "Banquete formal con servicio en mesa",
+    "text": "Menú de 3 o 4 tiempos servido en mesa por mozos uniformados. Ideal para matrimonios y cenas corporativas."
+  },
+  {
+    "id": "parrilla-vivo",
+    "order": 2,
+    "title": "Parrilla en vivo y asado al estilo chileno",
+    "text": "Maestro parrillero a la vista, cortes premium a punto. La modalidad estrella de la casa."
+  },
+  {
+    "id": "cocktail",
+    "order": 3,
+    "title": "Cocktail y bocados",
+    "text": "Variedad de canapés calientes y fríos servidos en bandeja. Perfecto para cocteles, inauguraciones y after office."
+  },
+  {
+    "id": "estaciones",
+    "order": 4,
+    "title": "Estaciones gastronómicas",
+    "text": "Distintas estaciones temáticas: pasta en vivo, mesa de mariscos, parrilla, postres. Tus invitados eligen."
+  },
+  {
+    "id": "quesos",
+    "order": 5,
+    "title": "Mesa de quesos, embutidos y conservas",
+    "text": "Selección curada de quesos chilenos e importados con maridajes. Recibimiento elegante para tus invitados."
+  },
+  {
+    "id": "bebidas",
+    "order": 6,
+    "title": "Barra de bebidas y bartender",
+    "text": "Coctelería de autor o clásicos, jugos naturales y bebidas sin alcohol. Bartender uniformado durante todo el evento."
+  },
+  {
+    "id": "postres",
+    "order": 7,
+    "title": "Mesa de postres y café",
+    "text": "Variedad de postres individuales, torta del evento y barra de café para cerrar la velada."
+  },
+  {
+    "id": "logistica-completa",
+    "order": 8,
+    "title": "Servicio completo de logística",
+    "text": "Montaje, vajilla, mantelería, mozos y limpieza al cierre. Te encargas de disfrutar, nosotros del resto."
+  }
+]

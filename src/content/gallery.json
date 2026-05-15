@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cordero-palo",
+    "order": 1,
+    "image": "cordero-al-palo.jpg",
+    "alt": "Cordero al palo asado en vivo en evento Fertomart",
+    "caption": "Cordero al palo · Especialidad de la casa",
+    "featured": true
+  },
+  {
+    "id": "parrilla",
+    "order": 2,
+    "image": "parrilla.jpg",
+    "alt": "Parrilla en vivo durante un evento",
+    "caption": "Parrilla en vivo"
+  },
+  {
+    "id": "carnes",
+    "order": 3,
+    "image": "carnes.jpg",
+    "alt": "Cortes premium servidos por Fertomart",
+    "caption": "Cortes premium"
+  },
+  {
+    "id": "corporativo-2",
+    "order": 4,
+    "image": "corporativo-2.jpg",
+    "alt": "Evento corporativo con servicio Fertomart",
+    "caption": "Cena corporativa"
+  },
+  {
+    "id": "cumpleanos",
+    "order": 5,
+    "image": "cumpleanos.jpg",
+    "alt": "Celebración de cumpleaños con catering Fertomart",
+    "caption": "Cumpleaños",
+    "featured": true
+  },
+  {
+    "id": "bautizo",
+    "order": 6,
+    "image": "bautizo.jpg",
+    "alt": "Bautizo celebrado con servicio Fertomart",
+    "caption": "Bautizos y celebraciones familiares"
+  },
+  {
+    "id": "aniversario",
+    "order": 7,
+    "image": "aniversario.jpg",
+    "alt": "Aniversario celebrado con servicio Fertomart",
+    "caption": "Aniversarios"
+  },
+  {
+    "id": "babyshower",
+    "order": 8,
+    "image": "babyshower.jpg",
+    "alt": "Baby shower con catering Fertomart",
+    "caption": "Baby showers"
+  },
+  {
+    "id": "cordero-palo-2",
+    "order": 9,
+    "image": "cordero-al-palo-2.jpg",
+    "alt": "Asado de cordero al palo en evento Fertomart",
+    "caption": "Asado al palo en vivo"
+  },
+  {
+    "id": "corporativo-3",
+    "order": 10,
+    "image": "corporativo-3.jpg",
+    "alt": "Evento corporativo Fertomart",
+    "caption": "Eventos de empresa"
+  }
+]

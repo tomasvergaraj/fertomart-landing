@@ -1,0 +1,23 @@
+[
+  {
+    "id": "carolina",
+    "order": 1,
+    "quote": "El servicio fue impecable. La parrilla en vivo fue el alma de la fiesta y nuestros invitados aún nos preguntan por el equipo de Fertomart.",
+    "author": "Carolina M.",
+    "context": "Matrimonio · Región Metropolitana"
+  },
+  {
+    "id": "patricio",
+    "order": 2,
+    "quote": "Organizamos un evento corporativo para 180 personas. Puntualidad, calidad y un menú perfecto. Repetimos sin dudar al año siguiente.",
+    "author": "Patricio R.",
+    "context": "Gerente · Empresa de logística"
+  },
+  {
+    "id": "andrea",
+    "order": 3,
+    "quote": "Para el cumpleaños de mi papá buscábamos algo distinto al catering común. La carne quedó perfecta y el equipo cuidó cada detalle.",
+    "author": "Andrea S.",
+    "context": "Cumpleaños familiar"
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "matrimonios",
+    "order": 1,
+    "icon": "❦",
+    "title": "Matrimonios",
+    "text": "Banquetes para el día más importante."
+  },
+  {
+    "id": "cumpleanos",
+    "order": 2,
+    "icon": "✦",
+    "title": "Cumpleaños",
+    "text": "Celebraciones íntimas o multitudinarias."
+  },
+  {
+    "id": "corporativos",
+    "order": 3,
+    "icon": "◆",
+    "title": "Eventos corporativos",
+    "text": "Cenas de empresa, lanzamientos y aniversarios."
+  },
+  {
+    "id": "bautizos",
+    "order": 4,
+    "icon": "❋",
+    "title": "Bautizos y primeras comuniones",
+    "text": "Reuniones familiares con servicio completo."
+  },
+  {
+    "id": "graduaciones",
+    "order": 5,
+    "icon": "✧",
+    "title": "Graduaciones",
+    "text": "Cierre de etapa con un menú a la altura."
+  },
+  {
+    "id": "a-medida",
+    "order": 6,
+    "icon": "◈",
+    "title": "Eventos a medida",
+    "text": "¿Algo especial en mente? Lo conversamos."
+  }
+]

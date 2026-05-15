@@ -1,0 +1,25 @@
+{
+  "name": "Fertomart · Eventos Gastronómicos",
+  "short_name": "Fertomart",
+  "description": "Servicios gastronómicos y banquetería en Chile. Especialistas en carnes.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0F0E0C",
+  "theme_color": "#0F0E0C",
+  "lang": "es-CL",
+  "icons": [
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/logo-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

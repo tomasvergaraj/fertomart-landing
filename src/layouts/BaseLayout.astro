@@ -1,0 +1,50 @@
+---
+/**
+ * Layout base de todo el sitio.
+ * Define <head> completo, fonts, SEO, favicon, theme-color.
+ * Cualquier página hereda este layout para no duplicar metadatos.
+ */
+import '~/styles/global.css';
+import SEO from '~/components/SEO.astro';
+import { SITE } from '~/data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  schemas?: Record<string, unknown>[];
+}
+
+const { title, description, image, schemas } = Astro.props;
+---
+
+<!doctype html>
+<html lang={SITE.locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content={SITE.themeColor} />
+    <meta name="generator" content={Astro.generator} />
+
+    <SEO title={title} description={description} image={image} schemas={schemas} />
+
+    <!-- Favicon multi-formato -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.svg" sizes="any" />
+    <link rel="mask-icon" href="/favicon.svg" color="#7A1F2B" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="application-name" content={SITE.name} />
+    <meta name="apple-mobile-web-app-title" content={SITE.name} />
+    <meta name="msapplication-TileColor" content={SITE.themeColor} />
+
+    <!-- DNS prefetch -->
+    <link rel="dns-prefetch" href="https://wa.me" />
+    <link rel="dns-prefetch" href="https://www.instagram.com" />
+    <link rel="dns-prefetch" href="https://www.facebook.com" />
+  </head>
+
+  <body>
+    <a href="#inicio" class="skip-link">Saltar al contenido principal</a>
+    <slot />
+  </body>
+</html>

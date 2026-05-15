@@ -1,0 +1,26 @@
+[
+  {
+    "id": "identidad",
+    "order": 1,
+    "title": "Eventos gastronómicos con identidad",
+    "text": "Cada celebración tiene un sello propio. Diseñamos la propuesta culinaria pensando en tu evento y en tus invitados."
+  },
+  {
+    "id": "logistica",
+    "order": 2,
+    "title": "Organizamos tu fiesta de inicio a fin",
+    "text": "Desde la cocina hasta el servicio en mesa. Nos hacemos cargo de la logística completa para que tú solo disfrutes."
+  },
+  {
+    "id": "presupuesto",
+    "order": 3,
+    "title": "Una propuesta a la medida de tu presupuesto",
+    "text": "Cotizamos con transparencia y nos ajustamos a lo que necesitas. Precios módicos sin sacrificar calidad."
+  },
+  {
+    "id": "compromiso",
+    "order": 4,
+    "title": "Compromiso y profesionalismo",
+    "text": "Seriedad en cada detalle. Llegamos a la hora, cumplimos lo acordado y dejamos todo impecable."
+  }
+]

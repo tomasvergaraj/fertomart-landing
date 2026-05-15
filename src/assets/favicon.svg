@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Fertomart">
+  <defs>
+    <linearGradient id="favBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1A1612"/>
+      <stop offset="100%" stop-color="#0F0E0C"/>
+    </linearGradient>
+    <linearGradient id="favF" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F4E9D8"/>
+      <stop offset="100%" stop-color="#D9BC7A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Fondo oscuro redondeado, contraste alto -->
+  <rect width="64" height="64" rx="14" fill="url(#favBg)"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="12.5" fill="none" stroke="#C9A961" stroke-width="0.9" opacity="0.5"/>
+
+  <!-- "F" italic serif, centrada y dominante para legibilidad a 16px -->
+  <text x="32" y="50"
+        font-family="'Fraunces', 'Playfair Display', 'Bodoni Moda', Georgia, serif"
+        font-size="56"
+        font-weight="600"
+        font-style="italic"
+        fill="url(#favF)"
+        text-anchor="middle"
+        letter-spacing="-2">F</text>
+
+  <!-- Acento en brasa (línea inferior) para la marca -->
+  <rect x="22" y="55" width="20" height="1.4" rx="0.7" fill="#B8473A"/>
+</svg>

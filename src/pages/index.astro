@@ -1,0 +1,54 @@
+---
+/**
+ * Página principal de Fertomart.
+ * Esta es la "composición": cada sección es un componente importado.
+ * Los Schema.org se generan dinámicamente desde las collections y se inyectan
+ * en el <head> vía el layout.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Nav from '~/components/sections/Nav.astro';
+import Hero from '~/components/sections/Hero.astro';
+import Pillars from '~/components/sections/Pillars.astro';
+import Services from '~/components/sections/Services.astro';
+import About from '~/components/sections/About.astro';
+import Specialty from '~/components/sections/Specialty.astro';
+import Events from '~/components/sections/Events.astro';
+import Gallery from '~/components/sections/Gallery.astro';
+import Process from '~/components/sections/Process.astro';
+import Testimonials from '~/components/sections/Testimonials.astro';
+import Faq from '~/components/sections/Faq.astro';
+import Cta from '~/components/sections/Cta.astro';
+import Lightbox from '~/components/sections/Lightbox.astro';
+import WhatsAppFab from '~/components/sections/WhatsAppFab.astro';
+import Footer from '~/components/sections/Footer.astro';
+import { localBusinessSchema, faqSchemaFromCollection } from '~/lib/seo';
+
+const faqs = (await getCollection('faq')).sort((a, b) => a.data.order - b.data.order);
+const schemas = [localBusinessSchema(), faqSchemaFromCollection(faqs)];
+---
+
+<BaseLayout schemas={schemas}>
+  <Nav />
+  <main id="inicio">
+    <Hero />
+    <Pillars />
+    <Services />
+    <About />
+    <Specialty />
+    <Events />
+    <Gallery />
+    <Process />
+    <Testimonials />
+    <Faq />
+    <Cta />
+  </main>
+  <Lightbox />
+  <WhatsAppFab />
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Activa las animaciones de scroll en toda la página
+  import '~/scripts/scroll-reveal.ts';
+</script>

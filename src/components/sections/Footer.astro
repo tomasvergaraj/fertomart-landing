@@ -1,0 +1,207 @@
+---
+import { Image } from 'astro:assets';
+import logoMark from '~/assets/logo-mark.svg';
+import Icon from '~/components/ui/Icon.astro';
+import { SITE, CONTACT, SOCIAL } from '~/data/site';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer" role="contentinfo">
+  <div class="container footer__inner">
+    <div class="footer__col footer__col--brand">
+      <div class="footer__brand">
+        <Image src={logoMark} alt={SITE.name} width={56} height={56} loading="lazy" />
+        <div>
+          <p class="footer__name">{SITE.legalName}</p>
+          <p class="footer__tagline">{SITE.tagline}</p>
+        </div>
+      </div>
+      <p class="footer__about">
+        25 años organizando matrimonios, cumpleaños y eventos corporativos.
+        Especialistas en carnes y servicio a medida.
+      </p>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="footer__title">Contacto</h4>
+      <ul class="footer__list">
+        <li><a href={`tel:${CONTACT.phone}`}>{CONTACT.phoneDisplay}</a></li>
+        <li><a href={`https://wa.me/${CONTACT.whatsappNumber}`} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+        <li><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="footer__title">Empresa</h4>
+      <ul class="footer__list">
+        <li>{SITE.legalName}</li>
+        <li>RUT: {SITE.rut}</li>
+        <li>Operamos en todo Chile</li>
+        <li>{SITE.schedule}</li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="footer__title">Síguenos</h4>
+      <div class="footer__socials">
+        <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="footer__social">
+          <Icon name="instagram" size={20} />
+          <span>Instagram</span>
+        </a>
+        <a href={SOCIAL.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="footer__social">
+          <Icon name="facebook" size={20} />
+          <span>Facebook</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__bottom container">
+    <p>© <span>{currentYear}</span> {SITE.name} SpA · Todos los derechos reservados.</p>
+    <p class="footer__credit">
+      Desarrollado por
+      <a href="https://nexosoftware.cl" target="_blank" rel="noopener noreferrer">Nexo Software SpA</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: #08070a;
+    color: rgba(244, 233, 216, 0.7);
+    padding: 3rem 0 2rem;
+  }
+  .footer__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid var(--color-line-light);
+  }
+  .footer__col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .footer__brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .footer__brand :global(img) {
+    flex-shrink: 0;
+  }
+  .footer__name {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--color-bg);
+    line-height: 1.3;
+    margin-bottom: 0.25rem;
+  }
+  .footer__tagline {
+    font-size: 0.8125rem;
+    color: rgba(244, 233, 216, 0.5);
+    letter-spacing: 0.05em;
+  }
+  .footer__about {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: rgba(244, 233, 216, 0.6);
+    max-width: 320px;
+  }
+  .footer__title {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: 1rem;
+  }
+  .footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .footer__list a {
+    color: rgba(244, 233, 216, 0.78);
+    transition: color 0.3s var(--ease);
+  }
+  .footer__list a:hover {
+    color: var(--color-gold);
+  }
+  .footer__socials {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .footer__social {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid rgba(244, 233, 216, 0.15);
+    border-radius: 999px;
+    color: rgba(244, 233, 216, 0.85);
+    font-size: 0.875rem;
+    font-weight: 500;
+    width: max-content;
+    transition:
+      border-color 0.3s var(--ease),
+      color 0.3s var(--ease),
+      background-color 0.3s var(--ease),
+      transform 0.2s var(--ease);
+  }
+  .footer__social:hover {
+    border-color: var(--color-gold);
+    background: rgba(201, 169, 97, 0.08);
+    color: var(--color-gold);
+    transform: translateY(-1px);
+  }
+  .footer__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 2.75rem;
+    padding-bottom: 5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: rgba(244, 233, 216, 0.4);
+  }
+  .footer__credit {
+    font-style: italic;
+  }
+  .footer__credit a {
+    color: rgba(244, 233, 216, 0.7);
+    font-style: normal;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(244, 233, 216, 0.2);
+    padding-bottom: 1px;
+    transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+  .footer__credit a:hover {
+    color: var(--color-gold);
+    border-bottom-color: var(--color-gold);
+  }
+  @media (min-width: 640px) {
+    .footer__inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+    .footer__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      padding-bottom: 2rem;
+    }
+  }
+  @media (min-width: 960px) {
+    .footer__inner {
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

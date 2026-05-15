@@ -1,0 +1,105 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHead from '~/components/ui/SectionHead.astro';
+
+const events = (await getCollection('events')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section class="events" aria-labelledby="events-title">
+  <div class="container">
+    <SectionHead eyebrow="Eventos que atendemos" align="center" id="events-title">
+      Cada momento merece estar <em>bien servido</em>
+    </SectionHead>
+
+    <div class="events__grid">
+      {events.map((event) => (
+        <div class="event-card reveal">
+          <span class="event-card__icon" aria-hidden="true">{event.data.icon}</span>
+          <h3>{event.data.title}</h3>
+          <p>{event.data.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .events {
+    padding: var(--space-section) 0;
+  }
+  .events__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .event-card {
+    position: relative;
+    padding: 2rem 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    background: var(--color-bg);
+    transition: transform 0.4s var(--ease), border-color 0.3s var(--ease), box-shadow 0.4s var(--ease);
+    overflow: hidden;
+  }
+  .event-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 100% 0%, rgba(122, 31, 43, 0.06) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.5s var(--ease);
+    pointer-events: none;
+  }
+  .event-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--color-wine);
+    box-shadow:
+      0 18px 40px -22px rgba(15, 14, 12, 0.25),
+      0 4px 12px -6px rgba(122, 31, 43, 0.12);
+  }
+  .event-card:hover::after {
+    opacity: 1;
+  }
+  .event-card:hover .event-card__icon {
+    color: var(--color-ember);
+    transform: scale(1.08) rotate(-3deg);
+  }
+  .event-card__icon {
+    display: block;
+    font-size: 1.75rem;
+    color: var(--color-wine);
+    margin-bottom: 1rem;
+    font-family: var(--font-serif);
+    transition: color 0.3s var(--ease), transform 0.4s var(--ease);
+    transform-origin: left center;
+  }
+  .event-card h3 {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .event-card p {
+    font-size: 0.9375rem;
+    color: var(--color-ink-soft);
+    line-height: 1.5;
+  }
+  @media (min-width: 640px) {
+    .events__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+  }
+  @media (min-width: 960px) {
+    .events__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .event-card {
+      padding: 2.5rem 2rem;
+    }
+  }
+</style>

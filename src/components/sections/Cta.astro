@@ -1,0 +1,399 @@
+---
+/**
+ * CTA final con formulario que arma un mensaje y abre WhatsApp.
+ * Sin backend ni dependencias externas.
+ */
+import { CONTACT } from '~/data/site';
+import Icon from '~/components/ui/Icon.astro';
+---
+
+<section class="cta" id="contacto" aria-labelledby="cta-title">
+  <div class="container cta__inner">
+    <span class="eyebrow eyebrow--gold">Conversemos</span>
+    <h2 id="cta-title" class="cta__title">
+      Cuéntanos de tu <em>evento</em>.<br />
+      Te enviamos una cotización sin compromiso.
+    </h2>
+
+    <form class="contact-form" id="contact-form" data-wa={CONTACT.whatsappNumber} novalidate>
+      <div class="contact-form__row">
+        <div class="contact-form__field">
+          <label for="cf-name">Tu nombre</label>
+          <input type="text" id="cf-name" name="name" required autocomplete="name" placeholder="Nombre y apellido" />
+        </div>
+        <div class="contact-form__field">
+          <label for="cf-event">Tipo de evento</label>
+          <select id="cf-event" name="event" required>
+            <option value="">Selecciona…</option>
+            <option>Matrimonio</option>
+            <option>Cumpleaños</option>
+            <option>Evento corporativo</option>
+            <option>Bautizo / Primera comunión</option>
+            <option>Graduación</option>
+            <option>Otro</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="contact-form__row">
+        <div class="contact-form__field">
+          <label for="cf-date">Fecha aproximada</label>
+          <input type="date" id="cf-date" name="date" />
+        </div>
+        <div class="contact-form__field">
+          <label for="cf-guests">N° de invitados</label>
+          <input type="number" id="cf-guests" name="guests" min="10" max="2000" step="10" placeholder="Ej: 80" />
+        </div>
+      </div>
+
+      <div class="contact-form__field">
+        <label for="cf-msg">Cuéntanos algo más <span class="contact-form__opt">(opcional)</span></label>
+        <textarea id="cf-msg" name="message" rows="3" placeholder="Estilo, lugar, presupuesto referencial, requerimientos especiales…"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn--whatsapp contact-form__submit">
+        <Icon name="whatsapp" size={18} />
+        Enviar a WhatsApp
+      </button>
+
+      <div class="contact-form__status" role="status" aria-live="polite" hidden>
+        <div class="contact-form__status-inner">
+          <span class="contact-form__status-icon" aria-hidden="true">
+            <Icon name="check" size={20} />
+          </span>
+          <span class="contact-form__status-text">Abriendo WhatsApp…</span>
+        </div>
+        <p class="contact-form__status-fallback">
+          ¿No se abrió WhatsApp?
+          <a href="#" target="_blank" rel="noopener noreferrer">Abrir manualmente</a>
+        </p>
+      </div>
+
+      <p class="contact-form__hint">Tus datos abrirán WhatsApp con el mensaje listo. No los almacenamos.</p>
+    </form>
+
+    <div class="cta__divider"><span>o contáctanos directo</span></div>
+
+    <a href={`tel:${CONTACT.phone}`} class="phone-display" aria-label={`Llamar al ${CONTACT.phoneDisplay}`}>
+      <span class="phone-display__label">Llámanos</span>
+      <span class="phone-display__number">{CONTACT.phoneDisplay}</span>
+    </a>
+
+    <div class="cta__buttons">
+      <a href={CONTACT.whatsappUrl()} class="btn btn--whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Cotizar por WhatsApp">
+        <Icon name="whatsapp" size={18} />
+        WhatsApp directo
+      </a>
+      <a href={`tel:${CONTACT.phone}`} class="btn btn--outline">Llamar ahora</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    padding: var(--space-section) 0;
+    background: var(--color-ink);
+    color: var(--color-bg);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 30%, rgba(122, 31, 43, 0.35) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(201, 169, 97, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .cta__inner {
+    text-align: center;
+    position: relative;
+    max-width: 760px;
+  }
+  .cta__title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.875rem, 5.5vw, 3.25rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 1rem 0 2.5rem;
+  }
+  .cta__title em {
+    font-style: italic;
+    color: var(--color-gold);
+  }
+
+  .phone-display {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 1.5rem 2.5rem;
+    border: 1px solid var(--color-gold);
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    background: rgba(201, 169, 97, 0.05);
+    transition:
+      background-color 0.3s var(--ease),
+      border-color 0.3s var(--ease),
+      transform 0.25s var(--ease);
+  }
+  .phone-display:hover {
+    background: rgba(201, 169, 97, 0.12);
+    border-color: var(--color-gold-soft);
+    transform: translateY(-2px);
+  }
+  .phone-display__label {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+  .phone-display__number {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--color-bg);
+  }
+
+  .cta__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  /* Formulario */
+  .contact-form {
+    background: rgba(244, 233, 216, 0.05);
+    border: 1px solid rgba(201, 169, 97, 0.25);
+    border-radius: 8px;
+    padding: 1.75rem 1.5rem;
+    margin: 0 auto 2.5rem;
+    max-width: 640px;
+    text-align: left;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .contact-form__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .contact-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  .contact-form__row .contact-form__field {
+    margin-bottom: 0;
+  }
+  .contact-form__field label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--color-gold);
+  }
+  .contact-form__opt {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    font-size: 0.7rem;
+    color: rgba(201, 169, 97, 0.65);
+    margin-left: 0.3rem;
+  }
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--color-bg);
+    background: rgba(244, 233, 216, 0.04);
+    border: 1px solid rgba(244, 233, 216, 0.18);
+    border-radius: 4px;
+    transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder {
+    color: rgba(244, 233, 216, 0.4);
+  }
+  .contact-form input:focus,
+  .contact-form select:focus,
+  .contact-form textarea:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    background: rgba(244, 233, 216, 0.08);
+  }
+  .contact-form select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23C9A961' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+  .contact-form select option {
+    background: var(--color-ink);
+    color: var(--color-bg);
+  }
+  .contact-form textarea {
+    resize: vertical;
+    min-height: 90px;
+    font-family: var(--font-sans);
+  }
+  .contact-form input:invalid:not(:placeholder-shown),
+  .contact-form select:invalid:not(:focus) {
+    border-color: rgba(184, 71, 58, 0.6);
+  }
+  .contact-form__submit {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .contact-form__hint {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    color: rgba(244, 233, 216, 0.55);
+    text-align: center;
+  }
+
+  .cta__divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.5rem auto 1.5rem;
+    max-width: 320px;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(244, 233, 216, 0.5);
+  }
+  .cta__divider::before,
+  .cta__divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(244, 233, 216, 0.2);
+  }
+
+  /* Status del form */
+  .contact-form__status {
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    background: rgba(37, 211, 102, 0.12);
+    border: 1px solid rgba(37, 211, 102, 0.35);
+    border-radius: 6px;
+    animation: fadeUp 0.35s var(--ease);
+  }
+  .contact-form__status[hidden] {
+    display: none;
+  }
+  .contact-form__status-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .contact-form__status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    background: #25d366;
+    color: white;
+    border-radius: 999px;
+  }
+  .contact-form__status-text {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-bg);
+  }
+  .contact-form__status-fallback {
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+    color: rgba(244, 233, 216, 0.75);
+  }
+  .contact-form__status-fallback a {
+    color: #25d366;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  @media (min-width: 640px) {
+    .contact-form {
+      padding: 2rem 1.75rem;
+    }
+    .contact-form__row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Formulario → WhatsApp.
+   * Arma un mensaje con los datos validados y abre wa.me en una nueva pestaña.
+   * Si el popup queda bloqueado, el fallback ofrece abrirlo manualmente.
+   */
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    const waNumber = form.dataset.wa ?? '';
+    const status = form.querySelector<HTMLElement>('.contact-form__status');
+    const fallbackLink = status?.querySelector<HTMLAnchorElement>('a');
+
+    const fmtDate = (d: string): string | null => {
+      if (!d) return null;
+      try {
+        const date = new Date(d + 'T00:00:00');
+        if (isNaN(date.getTime())) return d;
+        return date.toLocaleDateString('es-CL', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+        });
+      } catch {
+        return d;
+      }
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      const data = new FormData(form);
+      const name = (data.get('name') ?? '').toString().trim();
+      const event = (data.get('event') ?? '').toString().trim();
+      const date = fmtDate((data.get('date') ?? '').toString().trim());
+      const guests = (data.get('guests') ?? '').toString().trim();
+      const message = (data.get('message') ?? '').toString().trim();
+
+      const lines = [
+        `Hola Fertomart, soy *${name}*.`,
+        `Me gustaría cotizar un *${event}*.`,
+      ];
+      if (date) lines.push(`Fecha aproximada: ${date}.`);
+      if (guests) lines.push(`Invitados estimados: ${guests}.`);
+      if (message) lines.push('', message);
+
+      const text = encodeURIComponent(lines.join('\n'));
+      const url = `https://wa.me/${waNumber}?text=${text}`;
+
+      if (status) {
+        status.removeAttribute('hidden');
+        if (fallbackLink) fallbackLink.setAttribute('href', url);
+      }
+      window.open(url, '_blank', 'noopener,noreferrer');
+    });
+  }
+</script>

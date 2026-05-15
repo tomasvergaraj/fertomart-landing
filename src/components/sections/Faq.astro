@@ -1,0 +1,124 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHead from '~/components/ui/SectionHead.astro';
+
+const faqs = (await getCollection('faq')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section class="faq" id="faq" aria-labelledby="faq-title">
+  <div class="container">
+    <SectionHead eyebrow="Preguntas frecuentes" align="center" id="faq-title">
+      Resuelve dudas <em>antes de cotizar</em>
+    </SectionHead>
+
+    <div class="faq__list">
+      {faqs.map((item) => (
+        <details class="faq-item reveal">
+          <summary>
+            <span class="faq-item__q">{item.data.question}</span>
+            <span class="faq-item__icon" aria-hidden="true"></span>
+          </summary>
+          <div class="faq-item__answer">
+            <p>{item.data.answer}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    padding: var(--space-section) 0;
+    background: var(--color-bg);
+  }
+  .faq__list {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .faq-item {
+    background: var(--color-bg-deep);
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: border-color 0.3s var(--ease), box-shadow 0.4s var(--ease);
+  }
+  .faq-item[open] {
+    border-color: rgba(122, 31, 43, 0.35);
+    box-shadow: 0 10px 30px -18px rgba(15, 14, 12, 0.2);
+  }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--font-sans);
+    transition: background-color 0.3s var(--ease);
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item summary:hover {
+    background: var(--color-bg);
+  }
+  .faq-item summary:focus-visible {
+    outline-offset: -2px;
+  }
+  .faq-item__q {
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--color-ink);
+    letter-spacing: -0.005em;
+  }
+  .faq-item__icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    position: relative;
+    transition: transform 0.35s var(--ease);
+  }
+  .faq-item__icon::before,
+  .faq-item__icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: var(--color-wine);
+    transition: transform 0.35s var(--ease), opacity 0.25s var(--ease);
+  }
+  .faq-item__icon::before {
+    width: 14px;
+    height: 1.5px;
+    transform: translate(-50%, -50%);
+  }
+  .faq-item__icon::after {
+    width: 1.5px;
+    height: 14px;
+    transform: translate(-50%, -50%);
+  }
+  .faq-item[open] .faq-item__icon::after {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  .faq-item__answer {
+    padding: 0 1.5rem 1.5rem;
+    border-top: 1px solid var(--color-line);
+    padding-top: 1.25rem;
+    margin-top: -1px;
+  }
+  .faq-item__answer p {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--color-ink-soft);
+  }
+</style>

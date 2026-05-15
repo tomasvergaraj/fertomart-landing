@@ -1,0 +1,35 @@
+---
+/**
+ * Encabezado de sección reutilizable (eyebrow + título + subtítulo opcional).
+ * Acepta el título por slot para permitir <em> y saltos de línea con <br />.
+ */
+interface Props {
+  eyebrow: string;
+  align?: 'left' | 'center';
+  id?: string;
+  eyebrowVariant?: 'default' | 'gold';
+  titleVariant?: 'default' | 'light';
+  subtitle?: string;
+}
+
+const {
+  eyebrow,
+  align = 'left',
+  id,
+  eyebrowVariant = 'default',
+  titleVariant = 'default',
+  subtitle,
+} = Astro.props;
+
+const headClass = align === 'center' ? 'section__head section__head--center' : 'section__head';
+const eyebrowClass = eyebrowVariant === 'gold' ? 'eyebrow eyebrow--gold' : 'eyebrow';
+const titleClass = titleVariant === 'light' ? 'section__title section__title--light' : 'section__title';
+---
+
+<div class={headClass}>
+  <span class={eyebrowClass}>{eyebrow}</span>
+  <h2 id={id} class={titleClass}>
+    <slot />
+  </h2>
+  {subtitle && <p class="section__sub">{subtitle}</p>}
+</div>

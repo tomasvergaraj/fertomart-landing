@@ -1,0 +1,232 @@
+---
+/**
+ * Lightbox accesible para la galería.
+ * Se conecta a cualquier botón con [data-lightbox-trigger] en el DOM.
+ * Atajos: Escape (cerrar), ←/→ (navegar).
+ */
+import Icon from '~/components/ui/Icon.astro';
+---
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Galería de eventos ampliada" hidden>
+  <button type="button" class="lightbox__close" aria-label="Cerrar galería">
+    <Icon name="close" size={22} />
+  </button>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" aria-label="Imagen anterior">
+    <Icon name="chevron-left" size={22} />
+  </button>
+  <button type="button" class="lightbox__nav lightbox__nav--next" aria-label="Imagen siguiente">
+    <Icon name="chevron-right" size={22} />
+  </button>
+  <figure class="lightbox__figure">
+    <img class="lightbox__img" src="" alt="" />
+    <figcaption class="lightbox__caption"></figcaption>
+  </figure>
+  <span class="lightbox__counter" aria-live="polite"></span>
+</div>
+
+<style>
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(8, 7, 10, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: clamp(1rem, 4vw, 3rem);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease);
+  }
+  .lightbox[hidden] {
+    display: none;
+  }
+  .lightbox.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lightbox__figure {
+    position: relative;
+    max-width: min(100%, 1100px);
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    transform: scale(0.96);
+    transition: transform 0.35s var(--ease);
+    margin: 0;
+  }
+  .lightbox.is-open .lightbox__figure {
+    transform: scale(1);
+  }
+  .lightbox__img {
+    display: block;
+    max-width: 100%;
+    max-height: 75vh;
+    height: auto;
+    width: auto;
+    border-radius: 6px;
+    background: var(--color-ink);
+    box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.6);
+  }
+  .lightbox__caption {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.0625rem;
+    color: var(--color-bg);
+    text-align: center;
+  }
+  .lightbox__counter {
+    position: absolute;
+    top: clamp(1rem, 3vw, 2rem);
+    left: clamp(1rem, 3vw, 2rem);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: rgba(244, 233, 216, 0.7);
+    text-transform: uppercase;
+  }
+  .lightbox__close,
+  .lightbox__nav {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: rgba(244, 233, 216, 0.1);
+    color: var(--color-bg);
+    border: 1px solid rgba(244, 233, 216, 0.18);
+    cursor: pointer;
+    transition:
+      background-color 0.25s var(--ease),
+      border-color 0.25s var(--ease),
+      transform 0.2s var(--ease);
+  }
+  .lightbox__close:hover,
+  .lightbox__nav:hover {
+    background: rgba(244, 233, 216, 0.18);
+    border-color: var(--color-gold);
+    transform: scale(1.05);
+  }
+  .lightbox__close {
+    top: clamp(1rem, 3vw, 2rem);
+    right: clamp(1rem, 3vw, 2rem);
+  }
+  .lightbox__nav--prev {
+    left: clamp(0.75rem, 3vw, 2rem);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .lightbox__nav--next {
+    right: clamp(0.75rem, 3vw, 2rem);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .lightbox__nav--prev:hover {
+    transform: translateY(-50%) scale(1.05);
+  }
+  .lightbox__nav--next:hover {
+    transform: translateY(-50%) scale(1.05);
+  }
+</style>
+
+<script>
+  const $ = <T extends Element = Element>(s: string, c: ParentNode = document) =>
+    c.querySelector<T>(s);
+  const $$ = <T extends Element = Element>(s: string, c: ParentNode = document) =>
+    Array.from(c.querySelectorAll<T>(s));
+
+  const lightbox = $<HTMLElement>('#lightbox');
+  if (lightbox) {
+    const lightboxImg = $<HTMLImageElement>('.lightbox__img', lightbox);
+    const lightboxCaption = $<HTMLElement>('.lightbox__caption', lightbox);
+    const lightboxCounter = $<HTMLElement>('.lightbox__counter', lightbox);
+    const lightboxClose = $<HTMLButtonElement>('.lightbox__close', lightbox);
+    const lightboxPrev = $<HTMLButtonElement>('.lightbox__nav--prev', lightbox);
+    const lightboxNext = $<HTMLButtonElement>('.lightbox__nav--next', lightbox);
+    const triggers = $$<HTMLButtonElement>('[data-lightbox-trigger]');
+
+    let lightboxIndex = 0;
+    let prevFocus: HTMLElement | null = null;
+
+    const items = triggers.map((btn) => {
+      const img = btn.querySelector('img');
+      const cap = btn.querySelector('.gallery__caption');
+      return {
+        src: img?.getAttribute('src') ?? '',
+        alt: img?.getAttribute('alt') ?? '',
+        caption: cap?.textContent?.trim() ?? '',
+      };
+    });
+
+    function show(i: number) {
+      if (!items.length || !lightboxImg || !lightboxCaption || !lightboxCounter) return;
+      lightboxIndex = (i + items.length) % items.length;
+      const item = items[lightboxIndex];
+      lightboxImg.setAttribute('src', item.src);
+      lightboxImg.setAttribute('alt', item.alt);
+      lightboxCaption.textContent = item.caption;
+      lightboxCounter.textContent = `${lightboxIndex + 1} / ${items.length}`;
+    }
+
+    function open(i: number) {
+      prevFocus = document.activeElement as HTMLElement;
+      lightbox?.removeAttribute('hidden');
+      requestAnimationFrame(() => lightbox?.classList.add('is-open'));
+      document.body.classList.add('is-locked');
+      show(i);
+      document.addEventListener('keydown', onKey);
+      lightboxClose?.focus();
+    }
+
+    function close() {
+      lightbox?.classList.remove('is-open');
+      document.body.classList.remove('is-locked');
+      document.removeEventListener('keydown', onKey);
+      setTimeout(() => {
+        lightbox?.setAttribute('hidden', '');
+        lightboxImg?.setAttribute('src', '');
+      }, 300);
+      if (prevFocus?.focus) {
+        prevFocus.focus();
+        prevFocus = null;
+      }
+    }
+
+    function onKey(e: KeyboardEvent) {
+      switch (e.key) {
+        case 'Escape':
+          e.preventDefault();
+          close();
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          show(lightboxIndex - 1);
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          show(lightboxIndex + 1);
+          break;
+      }
+    }
+
+    triggers.forEach((btn, i) => btn.addEventListener('click', () => open(i)));
+    lightboxClose?.addEventListener('click', close);
+    lightboxPrev?.addEventListener('click', () => show(lightboxIndex - 1));
+    lightboxNext?.addEventListener('click', () => show(lightboxIndex + 1));
+
+    // Click fuera del contenido cierra
+    lightbox.addEventListener('click', (e) => {
+      const isControl = (e.target as HTMLElement).closest(
+        '.lightbox__figure, .lightbox__close, .lightbox__nav'
+      );
+      if (!isControl) close();
+    });
+  }
+</script>

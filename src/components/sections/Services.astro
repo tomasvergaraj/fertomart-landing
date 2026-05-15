@@ -1,0 +1,168 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import Icon from '~/components/ui/Icon.astro';
+
+const services = (await getCollection('services')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section class="services" id="servicios" aria-labelledby="services-title">
+  <div class="container">
+    <SectionHead
+      eyebrow="Modalidades de servicio"
+      align="center"
+      id="services-title"
+      subtitle="Cada formato es modular: puedes combinar varias modalidades según el estilo y la duración de tu celebración."
+    >
+      Lo que podemos <em>preparar</em> para tu evento
+    </SectionHead>
+
+    <div class="services__grid">
+      {services.map((service) => (
+        <article class="service-item reveal">
+          <span class="service-item__num">{String(service.data.order).padStart(2, '0')}</span>
+          <h3>{service.data.title}</h3>
+          <p>{service.data.text}</p>
+        </article>
+      ))}
+    </div>
+
+    <div class="services__notes">
+      <div class="services__note">
+        <span class="services__note-icon" aria-hidden="true">
+          <Icon name="clock" size={20} />
+        </span>
+        <div>
+          <strong>Eventos desde 30 invitados</strong>
+          <span>Cotizamos según menú, modalidad y cantidad de personas. Sin tope superior — hemos atendido eventos de +500.</span>
+        </div>
+      </div>
+      <div class="services__note">
+        <span class="services__note-icon" aria-hidden="true">
+          <Icon name="map-pin" size={20} />
+        </span>
+        <div>
+          <strong>Operamos en todo Chile</strong>
+          <span>Base en Hijuelas, Región de Valparaíso. Movilización a otras regiones según ubicación y cantidad de invitados.</span>
+        </div>
+      </div>
+      <div class="services__note">
+        <span class="services__note-icon" aria-hidden="true">
+          <Icon name="star" size={20} />
+        </span>
+        <div>
+          <strong>Menús a medida</strong>
+          <span>Adaptamos cortes, guarniciones y postres a tus requerimientos: vegetarianos, sin gluten o alergias.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .services {
+    padding: var(--space-section) 0;
+    background: var(--color-bg);
+    position: relative;
+  }
+  .services__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--color-line);
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+  }
+  .service-item {
+    background: var(--color-bg);
+    padding: 1.75rem 1.5rem;
+    position: relative;
+    transition: background-color 0.4s var(--ease);
+  }
+  .service-item:hover {
+    background: var(--color-bg-deep);
+  }
+  .service-item__num {
+    display: inline-block;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--color-wine);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+  }
+  .service-item h3 {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .service-item p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+  }
+  .services__notes {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--color-bg-deep);
+    border-radius: 6px;
+  }
+  .services__note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+  .services__note-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--color-bg);
+    color: var(--color-wine);
+  }
+  .services__note > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .services__note strong {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  .services__note span {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-ink-soft);
+  }
+  @media (min-width: 640px) {
+    .services__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .services__notes {
+      grid-template-columns: repeat(3, 1fr);
+      padding: 2rem;
+      gap: 1.5rem;
+    }
+  }
+  @media (min-width: 960px) {
+    .services__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .service-item {
+      padding: 2rem 1.75rem;
+    }
+  }
+</style>

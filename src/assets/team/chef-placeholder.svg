@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750" role="img" aria-label="Placeholder retrato del chef">
+  <defs>
+    <linearGradient id="chefBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1A1612"/>
+      <stop offset="100%" stop-color="#0F0E0C"/>
+    </linearGradient>
+    <radialGradient id="chefGlow" cx="0.5" cy="0.4" r="0.6">
+      <stop offset="0%" stop-color="#7A1F2B" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#7A1F2B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="chefSilhouette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A2620"/>
+      <stop offset="100%" stop-color="#0F0E0C"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="600" height="750" fill="url(#chefBg)"/>
+  <rect width="600" height="750" fill="url(#chefGlow)"/>
+
+  <!-- Marco decorativo -->
+  <rect x="30" y="30" width="540" height="690" fill="none" stroke="#C9A961" stroke-width="0.8" opacity="0.45"/>
+
+  <!-- Silueta editorial: cabeza + hombros + gorro de chef -->
+  <g fill="url(#chefSilhouette)">
+    <!-- Hombros y cuerpo -->
+    <path d="M 80 750 L 80 600 C 80 530, 150 480, 220 470 L 380 470 C 450 480, 520 530, 520 600 L 520 750 Z"/>
+    <!-- Cuello -->
+    <rect x="265" y="430" width="70" height="60"/>
+    <!-- Cabeza -->
+    <ellipse cx="300" cy="350" rx="105" ry="120"/>
+    <!-- Gorro de chef -->
+    <path d="M 195 220 C 195 180, 230 160, 260 168 C 268 145, 295 138, 315 152 C 340 138, 375 152, 380 180 C 410 185, 420 220, 405 245 L 195 245 Z" fill="#F4E9D8" opacity="0.92"/>
+    <!-- Banda del gorro -->
+    <rect x="195" y="240" width="210" height="22" fill="#F4E9D8" opacity="0.92"/>
+  </g>
+
+  <!-- Acento de brasa al pie -->
+  <line x1="240" y1="620" x2="360" y2="620" stroke="#C9A961" stroke-width="1" opacity="0.5"/>
+
+  <!-- Etiqueta -->
+  <text x="300" y="665" font-family="'Manrope', sans-serif" font-size="11" font-weight="600" letter-spacing="5" fill="#C9A961" text-anchor="middle" opacity="0.7">RETRATO · PENDIENTE</text>
+  <text x="300" y="690" font-family="'Fraunces', Georgia, serif" font-size="22" font-style="italic" font-weight="500" fill="#F4E9D8" text-anchor="middle" opacity="0.9">El maestro parrillero</text>
+</svg>

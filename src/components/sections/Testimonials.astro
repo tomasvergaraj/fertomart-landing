@@ -1,0 +1,107 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHead from '~/components/ui/SectionHead.astro';
+
+const testimonials = (await getCollection('testimonials')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section class="testimonials" aria-labelledby="testimonials-title">
+  <div class="container">
+    <SectionHead eyebrow="Testimonios" align="center" id="testimonials-title">
+      Lo que dicen quienes ya <em>nos eligieron</em>
+    </SectionHead>
+
+    <div class="testimonials__grid">
+      {testimonials.map((t) => (
+        <figure class="testimonial reveal">
+          <span class="testimonial__quote" aria-hidden="true">“</span>
+          <blockquote>
+            <p>{t.data.quote}</p>
+          </blockquote>
+          <figcaption class="testimonial__author">
+            <strong>{t.data.author}</strong>
+            <span>{t.data.context}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    padding: var(--space-section) 0;
+    background: var(--color-bg-deep);
+  }
+  .testimonials__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .testimonial {
+    position: relative;
+    padding: 2.5rem 1.75rem 2rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    transition: border-color 0.3s var(--ease), transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  }
+  .testimonial:hover {
+    border-color: var(--color-wine);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px -22px rgba(15, 14, 12, 0.18);
+  }
+  .testimonial__quote {
+    position: absolute;
+    top: -8px;
+    left: 1rem;
+    font-family: var(--font-serif);
+    font-size: 5rem;
+    font-style: italic;
+    line-height: 1;
+    color: var(--color-wine);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .testimonial blockquote {
+    margin: 0;
+  }
+  .testimonial blockquote p {
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+    margin-bottom: 1.25rem;
+  }
+  .testimonial__author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .testimonial__author strong {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  .testimonial__author span {
+    font-size: 0.8125rem;
+    color: var(--color-ink-soft);
+    letter-spacing: 0.02em;
+  }
+  @media (min-width: 640px) {
+    .testimonials__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 960px) {
+    .testimonials__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+  }
+</style>

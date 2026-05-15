@@ -1,0 +1,105 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHead from '~/components/ui/SectionHead.astro';
+
+const pillars = (await getCollection('pillars')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section class="pillars" id="propuesta" aria-labelledby="pillars-title">
+  <div class="container">
+    <SectionHead eyebrow="Nuestra propuesta" id="pillars-title">
+      Cuatro razones para confiar en <em>Fertomart</em>
+    </SectionHead>
+
+    <div class="pillars__grid">
+      {pillars.map((pillar) => (
+        <article class="pillar reveal">
+          <span class="pillar__num">{String(pillar.data.order).padStart(2, '0')}</span>
+          <h3 class="pillar__title">{pillar.data.title}</h3>
+          <p class="pillar__text">{pillar.data.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pillars {
+    padding: var(--space-section) 0;
+    background: var(--color-bg-deep);
+  }
+  .pillars__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--color-line);
+    border: 1px solid var(--color-line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .pillar {
+    background: var(--color-bg-deep);
+    padding: 2.25rem 1.75rem;
+    position: relative;
+    transition: background 0.4s var(--ease), transform 0.4s var(--ease);
+  }
+  .pillar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-wine), var(--color-gold));
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.5s var(--ease);
+  }
+  .pillar:hover {
+    background: var(--color-bg);
+  }
+  .pillar:hover::before {
+    transform: scaleX(1);
+  }
+  .pillar:hover .pillar__num {
+    color: var(--color-ember);
+  }
+  .pillar__num {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--color-wine);
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+    transition: color 0.4s var(--ease);
+  }
+  .pillar__title {
+    font-family: var(--font-serif);
+    font-size: 1.375rem;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+  .pillar__text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+  }
+  @media (min-width: 640px) {
+    .pillars__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 960px) {
+    .pillars__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .pillar {
+      padding: 2.75rem 2rem;
+    }
+  }
+</style>

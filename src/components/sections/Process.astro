@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHead from '~/components/ui/SectionHead.astro';
+
+const steps = (await getCollection('process')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section class="process" id="proceso" aria-labelledby="process-title">
+  <div class="container">
+    <SectionHead eyebrow="Cómo trabajamos" align="center" id="process-title">
+      De la primera idea al <em>cierre del evento</em>
+    </SectionHead>
+
+    <ol class="process__steps">
+      {steps.map((step) => (
+        <li class="process__step reveal">
+          <span class="process__num">{String(step.data.order).padStart(2, '0')}</span>
+          <h3>{step.data.title}</h3>
+          <p>{step.data.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .process {
+    padding: var(--space-section) 0;
+    background: var(--color-bg);
+  }
+  .process__steps {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    position: relative;
+  }
+  .process__step {
+    position: relative;
+    padding: 2rem 1.75rem;
+    background: var(--color-bg-deep);
+    border-radius: 6px;
+    border: 1px solid var(--color-line);
+    transition: border-color 0.4s var(--ease), transform 0.4s var(--ease);
+  }
+  .process__step:hover {
+    border-color: var(--color-wine);
+    transform: translateY(-4px);
+  }
+  .process__num {
+    display: inline-block;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--color-wine);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    line-height: 1;
+  }
+  .process__step h3 {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .process__step p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+  }
+  @media (min-width: 640px) {
+    .process__steps {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+  @media (min-width: 960px) {
+    .process__steps {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

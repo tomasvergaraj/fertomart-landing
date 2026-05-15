@@ -1,0 +1,195 @@
+---
+/**
+ * Botón flotante de WhatsApp.
+ * Se oculta automáticamente cuando el CTA (#contacto) está mayoritariamente
+ * visible para evitar redundancia.
+ */
+import { CONTACT } from '~/data/site';
+import Icon from '~/components/ui/Icon.astro';
+---
+
+<a
+  href={CONTACT.whatsappUrl()}
+  class="wa-fab"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Cotizar por WhatsApp"
+>
+  <span class="wa-fab__pulses" aria-hidden="true">
+    <span class="wa-fab__pulse"></span>
+    <span class="wa-fab__pulse wa-fab__pulse--delay"></span>
+  </span>
+  <span class="wa-fab__label">¿Cotizamos tu evento?</span>
+  <span class="wa-fab__icon" aria-hidden="true">
+    <Icon name="whatsapp" size={28} />
+  </span>
+</a>
+
+<style>
+  .wa-fab {
+    position: fixed;
+    bottom: calc(1.1rem + env(safe-area-inset-bottom, 0px));
+    right: calc(1.1rem + env(safe-area-inset-right, 0px));
+    z-index: 90;
+    width: 58px;
+    height: 58px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: #25d366;
+    color: #fff;
+    border-radius: 999px;
+    box-shadow:
+      0 8px 24px -6px rgba(37, 211, 102, 0.45),
+      0 4px 12px -4px rgba(15, 14, 12, 0.18);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    isolation: isolate;
+    transition:
+      width 0.45s var(--ease),
+      background 0.3s var(--ease),
+      transform 0.25s var(--ease),
+      box-shadow 0.3s var(--ease),
+      opacity 0.3s var(--ease);
+  }
+  .wa-fab__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+  }
+  .wa-fab__label {
+    display: inline-block;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding-left: 0;
+    padding-right: 0;
+    transform: translateX(8px);
+    transition:
+      max-width 0.45s var(--ease),
+      opacity 0.25s var(--ease),
+      transform 0.45s var(--ease),
+      padding 0.45s var(--ease);
+  }
+  .wa-fab:hover,
+  .wa-fab:focus-visible {
+    background: #1eb858;
+    width: 240px;
+    transform: translateY(-2px);
+    box-shadow:
+      0 14px 32px -8px rgba(37, 211, 102, 0.55),
+      0 6px 16px -4px rgba(15, 14, 12, 0.22);
+  }
+  .wa-fab:hover .wa-fab__label,
+  .wa-fab:focus-visible .wa-fab__label {
+    max-width: 200px;
+    opacity: 1;
+    padding-left: 18px;
+    padding-right: 4px;
+    transform: translateX(0);
+    transition:
+      max-width 0.45s var(--ease),
+      opacity 0.3s var(--ease) 0.1s,
+      transform 0.45s var(--ease),
+      padding 0.45s var(--ease);
+  }
+  .wa-fab:active {
+    transform: translateY(0);
+  }
+
+  .wa-fab__pulses {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.22s var(--ease);
+  }
+  .wa-fab__pulse {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: #25d366;
+    opacity: 0;
+    animation: wa-pulse 2.4s var(--ease) infinite;
+  }
+  .wa-fab__pulse--delay {
+    animation-delay: 1.2s;
+  }
+  @keyframes wa-pulse {
+    0% {
+      transform: scale(0.95);
+      opacity: 0.55;
+    }
+    70% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+  .wa-fab:hover .wa-fab__pulses,
+  .wa-fab:focus-visible .wa-fab__pulses {
+    opacity: 0;
+  }
+
+  @media (hover: none) {
+    .wa-fab__label {
+      display: none;
+    }
+    .wa-fab,
+    .wa-fab:hover,
+    .wa-fab:focus-visible {
+      width: 58px;
+    }
+    .wa-fab:hover .wa-fab__pulses,
+    .wa-fab:focus-visible .wa-fab__pulses {
+      opacity: 1;
+    }
+  }
+
+  .wa-fab.is-hidden {
+    opacity: 0;
+    transform: translateY(20px) scale(0.85);
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wa-fab__pulse {
+      display: none;
+    }
+    .wa-fab,
+    .wa-fab__label,
+    .wa-fab__pulses {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Oculta el FAB cuando el CTA está mayoritariamente visible
+  const fab = document.querySelector<HTMLElement>('.wa-fab');
+  const cta = document.getElementById('contacto');
+  if (fab && cta && 'IntersectionObserver' in window) {
+    const HIDE_RATIO = 0.6;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          fab.classList.toggle('is-hidden', entry.intersectionRatio >= HIDE_RATIO);
+        });
+      },
+      { threshold: [0, 0.3, 0.6, 0.9] }
+    );
+    obs.observe(cta);
+  }
+</script>
