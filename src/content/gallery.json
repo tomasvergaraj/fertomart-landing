@@ -8,65 +8,165 @@
     "featured": true
   },
   {
-    "id": "parrilla",
+    "id": "carpa-banquete",
     "order": 2,
+    "image": "carpa-banquete.jpg",
+    "alt": "Carpa con mesas redondas vestidas para banquete grande",
+    "caption": "Banquetes a gran escala",
+    "featured": true
+  },
+  {
+    "id": "parrilla",
+    "order": 3,
     "image": "parrilla.jpg",
     "alt": "Parrilla en vivo durante un evento",
     "caption": "Parrilla en vivo"
   },
   {
+    "id": "cortes-parrilla",
+    "order": 4,
+    "image": "cortes-parrilla.jpg",
+    "alt": "Cortes de carne en la parrilla listos para asar",
+    "caption": "Cortes seleccionados al fuego"
+  },
+  {
     "id": "carnes",
-    "order": 3,
+    "order": 5,
     "image": "carnes.jpg",
     "alt": "Cortes premium servidos por Fertomart",
     "caption": "Cortes premium"
   },
   {
+    "id": "carne-marinada",
+    "order": 6,
+    "image": "carne-marinada.jpg",
+    "alt": "Carnes marinadas sobre brasas",
+    "caption": "Carnes marinadas a las brasas"
+  },
+  {
+    "id": "anticuchos",
+    "order": 7,
+    "image": "anticuchos-parrilla.jpg",
+    "alt": "Anticuchos en preparación sobre la parrilla",
+    "caption": "Anticuchos en vivo"
+  },
+  {
+    "id": "mesa-negra-elegante",
+    "order": 8,
+    "image": "mesa-negra-elegante.jpg",
+    "alt": "Mesa elegante con mantel negro y centro de flores",
+    "caption": "Cena elegante de noche",
+    "featured": true
+  },
+  {
+    "id": "cumpleanos",
+    "order": 9,
+    "image": "cumpleanos.jpg",
+    "alt": "Celebración de cumpleaños con catering Fertomart",
+    "caption": "Cumpleaños"
+  },
+  {
     "id": "corporativo-2",
-    "order": 4,
+    "order": 10,
     "image": "corporativo-2.jpg",
     "alt": "Evento corporativo con servicio Fertomart",
     "caption": "Cena corporativa"
   },
   {
-    "id": "cumpleanos",
-    "order": 5,
-    "image": "cumpleanos.jpg",
-    "alt": "Celebración de cumpleaños con catering Fertomart",
-    "caption": "Cumpleaños",
-    "featured": true
+    "id": "mesa-azul-vino",
+    "order": 11,
+    "image": "mesa-azul-vino.jpg",
+    "alt": "Mesa decorada con mantel azul, vino y entradas",
+    "caption": "Banquete familiar"
   },
   {
     "id": "bautizo",
-    "order": 6,
+    "order": 12,
     "image": "bautizo.jpg",
     "alt": "Bautizo celebrado con servicio Fertomart",
     "caption": "Bautizos y celebraciones familiares"
   },
   {
+    "id": "entrada-palta-camarones",
+    "order": 13,
+    "image": "entrada-palta-camarones.jpg",
+    "alt": "Entrada gourmet de palta, camarones y queso",
+    "caption": "Entradas de autor"
+  },
+  {
+    "id": "pulpo-mariscos",
+    "order": 14,
+    "image": "pulpo-mariscos.jpg",
+    "alt": "Pulpo con palta y salsa rosada",
+    "caption": "Pulpo a la parrilla"
+  },
+  {
+    "id": "bocaditos-palta",
+    "order": 15,
+    "image": "bocaditos-palta.jpg",
+    "alt": "Bocaditos individuales de palta y huevo",
+    "caption": "Servicio a la carta"
+  },
+  {
+    "id": "pinchos-caprese",
+    "order": 16,
+    "image": "pinchos-caprese.jpg",
+    "alt": "Pinchos caprese de tomate cherry, mozzarella y albahaca",
+    "caption": "Cócteles y aperitivos"
+  },
+  {
+    "id": "buffet-ensaladas",
+    "order": 17,
+    "image": "buffet-ensaladas.jpg",
+    "alt": "Buffet de ensaladas variadas para evento",
+    "caption": "Buffet de acompañamientos"
+  },
+  {
     "id": "aniversario",
-    "order": 7,
+    "order": 18,
     "image": "aniversario.jpg",
     "alt": "Aniversario celebrado con servicio Fertomart",
     "caption": "Aniversarios"
   },
   {
     "id": "babyshower",
-    "order": 8,
+    "order": 19,
     "image": "babyshower.jpg",
     "alt": "Baby shower con catering Fertomart",
     "caption": "Baby showers"
   },
   {
+    "id": "cordero-palo-contraluz",
+    "order": 20,
+    "image": "cordero-palo-contraluz.jpg",
+    "alt": "Cordero al palo asándose con sol a contraluz",
+    "caption": "El fuego como protagonista",
+    "featured": true
+  },
+  {
+    "id": "postres-copas-frutas",
+    "order": 21,
+    "image": "postres-copas-frutas.jpg",
+    "alt": "Postres individuales en copas decorados con frutas",
+    "caption": "Postres individuales"
+  },
+  {
+    "id": "postres-mousse-trio",
+    "order": 22,
+    "image": "postres-mousse-trio.jpg",
+    "alt": "Trío de mousse de postre en copas pequeñas",
+    "caption": "Mesa dulce de cierre"
+  },
+  {
     "id": "cordero-palo-2",
-    "order": 9,
+    "order": 23,
     "image": "cordero-al-palo-2.jpg",
     "alt": "Asado de cordero al palo en evento Fertomart",
     "caption": "Asado al palo en vivo"
   },
   {
     "id": "corporativo-3",
-    "order": 10,
+    "order": 24,
     "image": "corporativo-3.jpg",
     "alt": "Evento corporativo Fertomart",
     "caption": "Eventos de empresa"

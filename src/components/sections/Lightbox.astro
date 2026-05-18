@@ -1,25 +1,49 @@
 ---
 /**
- * Lightbox accesible para la galería.
- * Se conecta a cualquier botón con [data-lightbox-trigger] en el DOM.
+ * Lightbox accesible para galería y reels.
+ * Se conecta a cualquier botón con [data-lightbox-trigger]:
+ *  - Imágenes: lee <img> y .gallery__caption dentro del botón.
+ *  - Videos: lee data-video-src y data-caption del botón.
  * Atajos: Escape (cerrar), ←/→ (navegar).
  */
 import Icon from '~/components/ui/Icon.astro';
+import { CONTACT } from '~/data/site';
+
+const waUrl = CONTACT.whatsappUrl(
+  'Hola Fertomart, vi su galería y me gustaría cotizar un evento.'
+);
 ---
 
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Galería de eventos ampliada" hidden>
   <button type="button" class="lightbox__close" aria-label="Cerrar galería">
     <Icon name="close" size={22} />
   </button>
-  <button type="button" class="lightbox__nav lightbox__nav--prev" aria-label="Imagen anterior">
+  <button type="button" class="lightbox__nav lightbox__nav--prev" aria-label="Anterior">
     <Icon name="chevron-left" size={22} />
   </button>
-  <button type="button" class="lightbox__nav lightbox__nav--next" aria-label="Imagen siguiente">
+  <button type="button" class="lightbox__nav lightbox__nav--next" aria-label="Siguiente">
     <Icon name="chevron-right" size={22} />
   </button>
   <figure class="lightbox__figure">
-    <img class="lightbox__img" src="" alt="" />
+    <img class="lightbox__img" src="" alt="" hidden />
+    <video class="lightbox__video" controls playsinline preload="none" hidden></video>
     <figcaption class="lightbox__caption"></figcaption>
+    <div class="lightbox__actions">
+      <a
+        href={waUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn--whatsapp lightbox__cta"
+        data-lightbox-cta
+      >
+        <Icon name="whatsapp" size={16} />
+        Cotizar este servicio
+      </a>
+      <a href="#contacto" class="btn btn--outline lightbox__cta-secondary" data-lightbox-form>
+        Solicitar cotización
+        <Icon name="arrow-right" size={14} />
+      </a>
+    </div>
   </figure>
   <span class="lightbox__counter" aria-live="polite"></span>
 </div>
@@ -62,15 +86,25 @@ import Icon from '~/components/ui/Icon.astro';
   .lightbox.is-open .lightbox__figure {
     transform: scale(1);
   }
-  .lightbox__img {
+  .lightbox__img,
+  .lightbox__video {
     display: block;
     max-width: 100%;
-    max-height: 75vh;
+    max-height: 70vh;
     height: auto;
     width: auto;
     border-radius: 6px;
     background: var(--color-ink);
     box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.6);
+  }
+  .lightbox__video {
+    max-height: 75vh;
+    aspect-ratio: 9 / 16;
+    width: auto;
+  }
+  .lightbox__img[hidden],
+  .lightbox__video[hidden] {
+    display: none;
   }
   .lightbox__caption {
     font-family: var(--font-serif);
@@ -78,6 +112,25 @@ import Icon from '~/components/ui/Icon.astro';
     font-size: 1.0625rem;
     color: var(--color-bg);
     text-align: center;
+  }
+  .lightbox__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 0.25rem;
+  }
+  .lightbox__cta-secondary {
+    color: var(--color-bg);
+    border-color: rgba(244, 233, 216, 0.45);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .lightbox__cta-secondary:hover {
+    background: rgba(244, 233, 216, 0.1);
+    border-color: var(--color-gold);
+    color: var(--color-gold);
   }
   .lightbox__counter {
     position: absolute;
@@ -93,16 +146,19 @@ import Icon from '~/components/ui/Icon.astro';
   .lightbox__close,
   .lightbox__nav {
     position: absolute;
+    z-index: 10;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 44px;
     height: 44px;
     border-radius: 999px;
-    background: rgba(244, 233, 216, 0.1);
+    background: rgba(15, 14, 12, 0.7);
     color: var(--color-bg);
-    border: 1px solid rgba(244, 233, 216, 0.18);
+    border: 1px solid rgba(244, 233, 216, 0.45);
     cursor: pointer;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     transition:
       background-color 0.25s var(--ease),
       border-color 0.25s var(--ease),
@@ -110,7 +166,7 @@ import Icon from '~/components/ui/Icon.astro';
   }
   .lightbox__close:hover,
   .lightbox__nav:hover {
-    background: rgba(244, 233, 216, 0.18);
+    background: var(--color-wine);
     border-color: var(--color-gold);
     transform: scale(1.05);
   }
@@ -119,12 +175,12 @@ import Icon from '~/components/ui/Icon.astro';
     right: clamp(1rem, 3vw, 2rem);
   }
   .lightbox__nav--prev {
-    left: clamp(0.75rem, 3vw, 2rem);
+    left: clamp(0.5rem, 2vw, 2rem);
     top: 50%;
     transform: translateY(-50%);
   }
   .lightbox__nav--next {
-    right: clamp(0.75rem, 3vw, 2rem);
+    right: clamp(0.5rem, 2vw, 2rem);
     top: 50%;
     transform: translateY(-50%);
   }
@@ -134,9 +190,45 @@ import Icon from '~/components/ui/Icon.astro';
   .lightbox__nav--next:hover {
     transform: translateY(-50%) scale(1.05);
   }
+
+  @media (max-width: 639px) {
+    .lightbox {
+      padding: 1rem 0.5rem;
+    }
+    .lightbox__nav {
+      width: 40px;
+      height: 40px;
+      top: auto;
+      bottom: 1rem;
+      transform: none;
+    }
+    .lightbox__nav--prev {
+      left: 1rem;
+    }
+    .lightbox__nav--next {
+      right: 1rem;
+    }
+    .lightbox__nav--prev:hover,
+    .lightbox__nav--next:hover {
+      transform: scale(1.05);
+    }
+    .lightbox__img {
+      max-height: 60vh;
+    }
+    .lightbox__video {
+      max-height: 65vh;
+    }
+    .lightbox__actions {
+      padding-bottom: 3.5rem;
+    }
+  }
 </style>
 
 <script>
+  type ImageItem = { type: 'image'; src: string; alt: string; caption: string };
+  type VideoItem = { type: 'video'; src: string; caption: string };
+  type LightboxItem = ImageItem | VideoItem;
+
   const $ = <T extends Element = Element>(s: string, c: ParentNode = document) =>
     c.querySelector<T>(s);
   const $$ = <T extends Element = Element>(s: string, c: ParentNode = document) =>
@@ -145,34 +237,83 @@ import Icon from '~/components/ui/Icon.astro';
   const lightbox = $<HTMLElement>('#lightbox');
   if (lightbox) {
     const lightboxImg = $<HTMLImageElement>('.lightbox__img', lightbox);
+    const lightboxVideo = $<HTMLVideoElement>('.lightbox__video', lightbox);
     const lightboxCaption = $<HTMLElement>('.lightbox__caption', lightbox);
     const lightboxCounter = $<HTMLElement>('.lightbox__counter', lightbox);
     const lightboxClose = $<HTMLButtonElement>('.lightbox__close', lightbox);
     const lightboxPrev = $<HTMLButtonElement>('.lightbox__nav--prev', lightbox);
     const lightboxNext = $<HTMLButtonElement>('.lightbox__nav--next', lightbox);
+    const lightboxCta = $<HTMLAnchorElement>('[data-lightbox-cta]', lightbox);
     const triggers = $$<HTMLButtonElement>('[data-lightbox-trigger]');
+
+    // Mensaje base de WhatsApp del CTA (lo mutamos por caption para personalizar).
+    const ctaBaseHref = lightboxCta?.getAttribute('href') ?? '';
 
     let lightboxIndex = 0;
     let prevFocus: HTMLElement | null = null;
 
-    const items = triggers.map((btn) => {
+    const items: LightboxItem[] = triggers.map((btn) => {
+      const videoSrc = btn.getAttribute('data-video-src');
+      const dataCaption = btn.getAttribute('data-caption') ?? '';
+      if (videoSrc) {
+        return { type: 'video', src: videoSrc, caption: dataCaption };
+      }
       const img = btn.querySelector('img');
       const cap = btn.querySelector('.gallery__caption');
       return {
+        type: 'image',
         src: img?.getAttribute('src') ?? '',
         alt: img?.getAttribute('alt') ?? '',
-        caption: cap?.textContent?.trim() ?? '',
+        caption: cap?.textContent?.trim() ?? dataCaption,
       };
     });
 
+    function resetVideo() {
+      if (!lightboxVideo) return;
+      lightboxVideo.pause();
+      lightboxVideo.removeAttribute('src');
+      while (lightboxVideo.firstChild) lightboxVideo.removeChild(lightboxVideo.firstChild);
+      try {
+        lightboxVideo.load();
+      } catch {}
+    }
+
+    function updateCta(caption: string) {
+      if (!lightboxCta || !ctaBaseHref) return;
+      const cleaned = caption.replace(/\s*·\s*/g, ' · ').trim();
+      const text = cleaned
+        ? `Hola Fertomart, vi "${cleaned}" en su galería y me gustaría cotizarlo.`
+        : 'Hola Fertomart, vi su galería y me gustaría cotizar un evento.';
+      const base = ctaBaseHref.split('?')[0];
+      lightboxCta.setAttribute('href', `${base}?text=${encodeURIComponent(text)}`);
+    }
+
     function show(i: number) {
-      if (!items.length || !lightboxImg || !lightboxCaption || !lightboxCounter) return;
+      if (!items.length || !lightboxCaption || !lightboxCounter) return;
       lightboxIndex = (i + items.length) % items.length;
       const item = items[lightboxIndex];
-      lightboxImg.setAttribute('src', item.src);
-      lightboxImg.setAttribute('alt', item.alt);
+
+      resetVideo();
+
+      if (item.type === 'video' && lightboxVideo) {
+        if (lightboxImg) {
+          lightboxImg.setAttribute('hidden', '');
+          lightboxImg.removeAttribute('src');
+        }
+        lightboxVideo.removeAttribute('hidden');
+        lightboxVideo.setAttribute('src', item.src);
+        lightboxVideo.load();
+        lightboxVideo.play().catch(() => {});
+      } else if (item.type === 'image' && lightboxImg) {
+        if (lightboxVideo) lightboxVideo.setAttribute('hidden', '');
+        lightboxImg.removeAttribute('hidden');
+        lightboxImg.setAttribute('src', item.src);
+        lightboxImg.setAttribute('alt', item.alt);
+      }
+
       lightboxCaption.textContent = item.caption;
       lightboxCounter.textContent = `${lightboxIndex + 1} / ${items.length}`;
+      updateCta(item.caption);
     }
 
     function open(i: number) {
@@ -191,7 +332,8 @@ import Icon from '~/components/ui/Icon.astro';
       document.removeEventListener('keydown', onKey);
       setTimeout(() => {
         lightbox?.setAttribute('hidden', '');
-        lightboxImg?.setAttribute('src', '');
+        if (lightboxImg) lightboxImg.setAttribute('src', '');
+        resetVideo();
       }, 300);
       if (prevFocus?.focus) {
         prevFocus.focus();
@@ -221,6 +363,11 @@ import Icon from '~/components/ui/Icon.astro';
     lightboxPrev?.addEventListener('click', () => show(lightboxIndex - 1));
     lightboxNext?.addEventListener('click', () => show(lightboxIndex + 1));
 
+    // El CTA "Solicitar cotización" sólo navega al formulario, así que cerramos el lightbox.
+    $<HTMLAnchorElement>('[data-lightbox-form]', lightbox)?.addEventListener('click', () => {
+      close();
+    });
+
     // Click fuera del contenido cierra
     lightbox.addEventListener('click', (e) => {
       const isControl = (e.target as HTMLElement).closest(
@@ -228,5 +375,64 @@ import Icon from '~/components/ui/Icon.astro';
       );
       if (!isControl) close();
     });
+
+    /**
+     * Swipe horizontal en móvil/tablet: izq → siguiente, der → anterior.
+     * Ignora gestos sobre los controles del video y sobre botones/links
+     * para no romper la interacción nativa.
+     */
+    const SWIPE_THRESHOLD = 50; // px mínimos horizontales
+    const SWIPE_MAX_VERTICAL = 80; // px máximos verticales (evita confundir con scroll)
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchActive = false;
+
+    function isSwipeIgnoredTarget(target: EventTarget | null): boolean {
+      if (!(target instanceof HTMLElement)) return false;
+      return !!target.closest('video, button, a, .lightbox__actions');
+    }
+
+    lightbox.addEventListener(
+      'touchstart',
+      (e) => {
+        if (e.touches.length !== 1) {
+          touchActive = false;
+          return;
+        }
+        if (isSwipeIgnoredTarget(e.target)) {
+          touchActive = false;
+          return;
+        }
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchActive = true;
+      },
+      { passive: true }
+    );
+
+    lightbox.addEventListener(
+      'touchend',
+      (e) => {
+        if (!touchActive) return;
+        touchActive = false;
+        const t = e.changedTouches[0];
+        if (!t) return;
+        const dx = t.clientX - touchStartX;
+        const dy = t.clientY - touchStartY;
+        if (Math.abs(dy) > SWIPE_MAX_VERTICAL) return;
+        if (Math.abs(dx) < SWIPE_THRESHOLD) return;
+        if (dx < 0) show(lightboxIndex + 1);
+        else show(lightboxIndex - 1);
+      },
+      { passive: true }
+    );
+
+    lightbox.addEventListener(
+      'touchcancel',
+      () => {
+        touchActive = false;
+      },
+      { passive: true }
+    );
   }
 </script>

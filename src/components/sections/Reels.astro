@@ -1,0 +1,311 @@
+---
+/**
+ * Reels: tira horizontal de videos verticales (estilo redes sociales).
+ * - Cada reel es un botón que abre el lightbox con el video en grande.
+ * - El preview se reproduce silenciado en loop al entrar al viewport.
+ * - Cada reel y la sección incluyen CTA a WhatsApp para cotizar.
+ */
+import SectionHead from '~/components/ui/SectionHead.astro';
+import Icon from '~/components/ui/Icon.astro';
+import { CONTACT } from '~/data/site';
+
+import reel1 from '~/assets/reels/reel-evento-01.mp4';
+import reel2 from '~/assets/reels/reel-evento-02.mp4';
+import reel3 from '~/assets/reels/reel-evento-03.mp4';
+import reel4 from '~/assets/reels/reel-evento-04.mp4';
+import reel5 from '~/assets/reels/reel-cordero-palo.mp4';
+import reel6 from '~/assets/reels/reel-banquete.mp4';
+
+const reels = [
+  { src: reel1, title: 'Coctelería' },
+  { src: reel2, title: 'Platos de entradas' },
+  { src: reel3, title: 'Montaje de mesas' },
+  { src: reel4, title: 'Eventos personalizados' },
+  { src: reel5, title: 'Cocina sobre brasas' },
+  { src: reel6, title: 'Parrilladas' },
+];
+
+const waSection = CONTACT.whatsappUrl(
+  'Hola Fertomart, vi sus videos de eventos y me gustaría cotizar un servicio.'
+);
+---
+
+<section class="reels" id="reels" aria-labelledby="reels-title">
+  <div class="container">
+    <SectionHead
+      eyebrow="Detrás del fuego"
+      align="center"
+      id="reels-title"
+      subtitle="Momentos reales de nuestros servicios: la cocina en vivo, el montaje del salón y el ritmo de cada evento. Tócalos para ver en grande."
+    >
+      Algunos <em>momentos</em> en movimiento
+    </SectionHead>
+
+    <div class="reels__strip" role="list">
+      {reels.map((reel, i) => (
+        <button
+          type="button"
+          class="reel reveal"
+          data-lightbox-trigger
+          data-video-src={reel.src}
+          data-caption={reel.title}
+          aria-label={`Ver video: ${reel.title}`}
+          role="listitem"
+        >
+          <video
+            class="reel__video"
+            muted
+            loop
+            playsinline
+            preload="none"
+            data-reel
+            aria-hidden="true"
+          >
+            <source src={reel.src} type="video/mp4" />
+          </video>
+          <span class="reel__play" aria-hidden="true">
+            <Icon name="play" size={22} />
+          </span>
+          <span class="reel__meta">
+            <span class="reel__num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="reel__title">{reel.title}</span>
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <p class="reels__hint" aria-hidden="true">Desliza para ver más →</p>
+
+    <div class="reels__footer">
+      <a href={waSection} target="_blank" rel="noopener noreferrer" class="btn btn--whatsapp">
+        <Icon name="whatsapp" size={18} />
+        Cotiza tu evento por WhatsApp
+      </a>
+      <a href="#contacto" class="btn btn--ghost reels__form-btn">
+        Solicitar cotización
+        <Icon name="arrow-right" size={14} />
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reels {
+    padding: var(--space-section) 0;
+    background: var(--color-bg);
+  }
+
+  .reels__strip {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 78%;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding: 0.5rem 0.25rem 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-wine) transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+  .reels__strip::-webkit-scrollbar {
+    height: 6px;
+  }
+  .reels__strip::-webkit-scrollbar-thumb {
+    background: var(--color-wine);
+    border-radius: 3px;
+  }
+
+  .reel {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--color-ink);
+    appearance: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: zoom-in;
+    color: inherit;
+    font-family: inherit;
+    isolation: isolate;
+    scroll-snap-align: start;
+    box-shadow:
+      0 20px 40px -20px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(122, 31, 43, 0.12);
+    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  }
+  .reel:hover,
+  .reel:focus-visible {
+    transform: translateY(-3px);
+    box-shadow:
+      0 28px 50px -22px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(201, 169, 97, 0.35);
+  }
+  .reel:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+  }
+
+  .reel__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: var(--color-ink);
+  }
+
+  .reel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(15, 14, 12, 0.8) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .reel__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 56px;
+    height: 56px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 14, 12, 0.55);
+    border: 1px solid rgba(244, 233, 216, 0.6);
+    color: var(--color-bg);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: background-color 0.25s var(--ease), transform 0.25s var(--ease), border-color 0.25s var(--ease);
+  }
+  .reel__play svg {
+    margin-left: 3px;
+  }
+  .reel:hover .reel__play,
+  .reel:focus-visible .reel__play {
+    background: var(--color-wine);
+    border-color: var(--color-gold);
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+
+  .reel__meta {
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.6rem;
+    color: var(--color-bg);
+    text-align: left;
+  }
+  .reel__num {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--color-gold);
+    line-height: 1;
+  }
+  .reel__title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: rgba(244, 233, 216, 0.98);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .reels__hint {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--color-ink-soft);
+    letter-spacing: 0.05em;
+  }
+
+  .reels__footer {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+  .reels__form-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  @media (hover: none) {
+    /* En móvil el meta y el play ya están visibles por defecto */
+    .reel__play {
+      background: rgba(15, 14, 12, 0.6);
+    }
+  }
+
+  @media (min-width: 640px) {
+    .reels__strip {
+      grid-auto-columns: 42%;
+      gap: 1.25rem;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .reels__strip {
+      grid-auto-columns: minmax(0, 1fr);
+      grid-auto-flow: row;
+      grid-template-columns: repeat(6, 1fr);
+      overflow: visible;
+      scroll-snap-type: none;
+      padding: 0;
+      gap: 1rem;
+    }
+    .reels__hint {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reel__video {
+      display: none;
+    }
+    .reel__trigger {
+      background: linear-gradient(135deg, var(--color-ink) 0%, var(--color-wine) 100%);
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Cada reel se reproduce sólo cuando entra al viewport;
+   * se pausa al salir para ahorrar CPU/datos.
+   */
+  const reelVideos = document.querySelectorAll<HTMLVideoElement>('[data-reel]');
+  if (reelVideos.length && 'IntersectionObserver' in window) {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            if (video.preload === 'none') {
+              video.preload = 'metadata';
+              video.load();
+            }
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    reelVideos.forEach((v) => obs.observe(v));
+  }
+</script>

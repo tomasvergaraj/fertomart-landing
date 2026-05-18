@@ -17,7 +17,8 @@ interface Props {
     | 'close'
     | 'chevron-left'
     | 'chevron-right'
-    | 'external';
+    | 'external'
+    | 'play';
   size?: number;
   class?: string;
 }
@@ -117,6 +118,13 @@ const { name, size = 18, class: className } = Astro.props;
   name === 'external' && (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class={className}>
       <path d="M7 17L17 7M9 7h8v8" />
+    </svg>
+  )
+}
+{
+  name === 'play' && (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class={className}>
+      <path d="M8 5.14v13.72a1 1 0 001.52.85l11-6.86a1 1 0 000-1.7l-11-6.86A1 1 0 008 5.14z" />
     </svg>
   )
 }

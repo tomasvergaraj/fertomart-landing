@@ -44,13 +44,14 @@ function getImage(filename: string): ImageMetadata {
       Algunos <em>eventos</em> que hemos realizado
     </SectionHead>
 
-    <div class="gallery__grid">
+    <div class="gallery__grid" role="list">
       {gallery.map((item) => (
         <button
           type="button"
           class:list={['gallery__item reveal', { 'gallery__item--lg': item.data.featured }]}
           data-lightbox-trigger
           aria-label={`Ver: ${item.data.caption}`}
+          role="listitem"
         >
           <Image
             src={getImage(item.data.image)}
@@ -63,6 +64,8 @@ function getImage(filename: string): ImageMetadata {
         </button>
       ))}
     </div>
+
+    <p class="gallery__swipe-hint" aria-hidden="true">Desliza para ver más →</p>
 
     <p class="gallery__note">
       ¿Quieres ver más?
@@ -79,10 +82,35 @@ function getImage(filename: string): ImageMetadata {
     padding: var(--space-section) 0;
     background: var(--color-bg-deep);
   }
+  /* En móvil: carrusel horizontal con scroll-snap. Cada item ocupa ~85% del ancho. */
   .gallery__grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-auto-flow: column;
+    grid-auto-columns: 85%;
     gap: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1rem;
+    padding: 0.5rem 1rem 1.25rem;
+    margin: 0 calc(var(--container-padding, 1.25rem) * -1);
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-wine) transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+  .gallery__grid::-webkit-scrollbar {
+    height: 6px;
+  }
+  .gallery__grid::-webkit-scrollbar-thumb {
+    background: var(--color-wine);
+    border-radius: 3px;
+  }
+  .gallery__swipe-hint {
+    margin-top: 0.25rem;
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--color-ink-soft);
+    letter-spacing: 0.05em;
   }
   .gallery__item {
     position: relative;
@@ -99,6 +127,31 @@ function getImage(filename: string): ImageMetadata {
     color: inherit;
     font-family: inherit;
     font-size: inherit;
+    scroll-snap-align: center;
+    /* Animación de zoom-in/out al entrar y salir del viewport del carrusel */
+    transform: scale(0.92);
+    opacity: 0.7;
+    transition: transform 0.4s var(--ease), opacity 0.4s var(--ease);
+  }
+  /* Navegadores con scroll-driven animations: animación nativa, suave y por GPU */
+  @supports (animation-timeline: view()) {
+    .gallery__item {
+      transform: none;
+      opacity: 1;
+      animation: gallerySnap linear both;
+      animation-timeline: view(inline);
+      animation-range: cover 5% cover 95%;
+    }
+    @keyframes gallerySnap {
+      0%   { transform: scale(0.88); opacity: 0.55; }
+      50%  { transform: scale(1);    opacity: 1; }
+      100% { transform: scale(0.88); opacity: 0.55; }
+    }
+  }
+  /* Fallback: el item activo se marca por IntersectionObserver */
+  .gallery__item.is-active {
+    transform: scale(1);
+    opacity: 1;
   }
   .gallery__item :global(img) {
     width: 100%;
@@ -173,8 +226,23 @@ function getImage(filename: string): ImageMetadata {
 
   @media (min-width: 640px) {
     .gallery__grid {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
       grid-template-columns: repeat(2, 1fr);
       gap: 1.25rem;
+      overflow: visible;
+      scroll-snap-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    .gallery__item {
+      transform: none;
+      opacity: 1;
+      animation: none;
+      scroll-snap-align: none;
+    }
+    .gallery__swipe-hint {
+      display: none;
     }
   }
   @media (min-width: 960px) {
@@ -188,4 +256,49 @@ function getImage(filename: string): ImageMetadata {
       aspect-ratio: 16 / 9;
     }
   }
+  @media (prefers-reduced-motion: reduce) {
+    .gallery__item {
+      transform: none;
+      opacity: 1;
+      animation: none;
+      transition: none;
+    }
+  }
 </style>
+
+<script>
+  /**
+   * Fallback para el carrusel móvil de la galería:
+   * en navegadores sin `animation-timeline: view()`, marca el item más cercano
+   * al centro del scroller con `.is-active` para mantener la animación visual
+   * de escala/opacidad al deslizar.
+   */
+  const grid = document.querySelector<HTMLElement>('.gallery__grid');
+  const supportsScrollAnim =
+    typeof CSS !== 'undefined' && CSS.supports?.('animation-timeline: view()');
+
+  if (grid && !supportsScrollAnim && 'IntersectionObserver' in window) {
+    const items = Array.from(grid.querySelectorAll<HTMLElement>('.gallery__item'));
+    const obs = new IntersectionObserver(
+      (entries) => {
+        // Sólo aplicamos en el modo carrusel (ancho < 640px aprox)
+        if (window.innerWidth >= 640) {
+          items.forEach((el) => el.classList.remove('is-active'));
+          return;
+        }
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio >= 0.7) {
+            entry.target.classList.add('is-active');
+          } else {
+            entry.target.classList.remove('is-active');
+          }
+        });
+      },
+      {
+        root: grid,
+        threshold: [0, 0.3, 0.7, 1],
+      }
+    );
+    items.forEach((el) => obs.observe(el));
+  }
+</script>
