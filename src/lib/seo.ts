@@ -2,7 +2,7 @@
  * Helpers para generar JSON-LD (Schema.org) a partir de los datos del sitio.
  * Mantener todo el SEO estructurado en un solo lugar evita inconsistencias.
  */
-import { SITE, CONTACT, SOCIAL } from '~/data/site';
+import { SITE, CONTACT, SOCIAL, GOOGLE } from '~/data/site';
 import type { CollectionEntry } from 'astro:content';
 
 /**
@@ -21,6 +21,22 @@ const BUSINESS_LOCATION = {
 } as const;
 
 export function localBusinessSchema() {
+  // Sólo agregamos aggregateRating si hay reseñas reales. Google penaliza
+  // ratings inventados o sin reviews que los respalden.
+  const rating = GOOGLE.aggregateRating;
+  const aggregateRating =
+    rating.count > 0 && rating.value > 0
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: rating.value,
+            reviewCount: rating.count,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }
+      : {};
+
   return {
     '@context': 'https://schema.org',
     '@type': ['LocalBusiness', 'FoodEstablishment', 'CateringService'],
@@ -85,6 +101,7 @@ export function localBusinessSchema() {
       { '@type': 'Offer', name: 'Coctelería y catering corporativo' },
     ],
     sameAs: [SOCIAL.instagram, SOCIAL.facebook],
+    ...aggregateRating,
   };
 }
 

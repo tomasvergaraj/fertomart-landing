@@ -1,10 +1,21 @@
 ---
 import { getCollection } from 'astro:content';
 import SectionHead from '~/components/ui/SectionHead.astro';
+import Icon from '~/components/ui/Icon.astro';
+import { GOOGLE } from '~/data/site';
 
 const testimonials = (await getCollection('testimonials')).sort(
   (a, b) => a.data.order - b.data.order
 );
+
+// Sólo mostramos el panel de Google si está configurado (placeId o short URL).
+const showGooglePanel = GOOGLE.isEnabled();
+const reviewUrl = GOOGLE.reviewUrl();
+const mapsUrl = GOOGLE.mapsUrl();
+const { value: rating, count: reviewCount } = GOOGLE.aggregateRating;
+const hasRating = rating > 0 && reviewCount > 0;
+// Estrellas visuales (1-5) con relleno proporcional al rating.
+const stars = [1, 2, 3, 4, 5];
 ---
 
 <section class="testimonials" aria-labelledby="testimonials-title">
@@ -27,6 +38,57 @@ const testimonials = (await getCollection('testimonials')).sort(
         </figure>
       ))}
     </div>
+
+    {showGooglePanel && (
+      <aside class="google-panel reveal" aria-label="Reseñas en Google">
+        <div class="google-panel__header">
+          <Icon name="google" size={28} />
+          <div class="google-panel__title-block">
+            <p class="google-panel__title">Reseñas en Google</p>
+            {hasRating ? (
+              <div class="google-panel__rating">
+                <span class="google-panel__rating-num">{rating.toFixed(1)}</span>
+                <span class="google-panel__stars" aria-hidden="true">
+                  {stars.map((i) => (
+                    <span class="google-star" data-fill={Math.max(0, Math.min(1, rating - (i - 1)))}>
+                      <Icon name="star" size={16} />
+                    </span>
+                  ))}
+                </span>
+                <span class="google-panel__count">({reviewCount} reseñas)</span>
+              </div>
+            ) : (
+              <p class="google-panel__sub">Tu experiencia ayuda a que más personas nos encuentren.</p>
+            )}
+          </div>
+        </div>
+
+        <div class="google-panel__actions">
+          {reviewUrl && (
+            <a
+              href={reviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn--primary google-panel__cta"
+            >
+              <Icon name="star" size={16} />
+              Déjanos tu reseña
+            </a>
+          )}
+          {mapsUrl && (
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="google-panel__link"
+            >
+              Ver todas en Google
+              <Icon name="external" size={14} />
+            </a>
+          )}
+        </div>
+      </aside>
+    )}
   </div>
 </section>
 
@@ -104,4 +166,142 @@ const testimonials = (await getCollection('testimonials')).sort(
       gap: 1.75rem;
     }
   }
+
+  /* Panel de Google */
+  .google-panel {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 12px 30px -22px rgba(15, 14, 12, 0.15);
+  }
+  .google-panel__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .google-panel__title-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .google-panel__title {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--color-ink-soft);
+    margin: 0;
+  }
+  .google-panel__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .google-panel__rating-num {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+  .google-panel__stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
+  /* Cada estrella se "rellena" parcialmente con un degradado vía mask */
+  .google-star {
+    position: relative;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    color: var(--color-line);
+  }
+  .google-star::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    color: #fbbc04;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z'/></svg>") center / contain no-repeat;
+    mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z'/></svg>") center / contain no-repeat;
+    width: calc(var(--fill, 1) * 100%);
+    transition: width 0.3s var(--ease);
+  }
+  .google-panel__count {
+    font-size: 0.8125rem;
+    color: var(--color-ink-soft);
+  }
+  .google-panel__sub {
+    font-size: 0.9375rem;
+    color: var(--color-ink-soft);
+    margin: 0;
+    max-width: 36ch;
+  }
+  .google-panel__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .google-panel__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .google-panel__link {
+    font-size: 0.875rem;
+    color: var(--color-wine);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+    transition: color 0.3s var(--ease);
+  }
+  .google-panel__link:hover {
+    color: var(--color-ember);
+  }
+
+  @media (min-width: 640px) {
+    .google-panel {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+      padding: 1.75rem 2rem;
+    }
+    .google-panel__header {
+      flex-direction: row;
+      align-items: center;
+    }
+    .google-panel__title-block {
+      align-items: flex-start;
+    }
+    .google-panel__rating {
+      justify-content: flex-start;
+    }
+  }
 </style>
+
+<script>
+  /**
+   * Rellena cada estrella proporcionalmente al rating (data-fill ∈ [0, 1]).
+   * Lo hacemos en JS para evitar inline styles que rompan el scoping CSS de Astro.
+   */
+  document.querySelectorAll<HTMLElement>('.google-star[data-fill]').forEach((el) => {
+    const fill = parseFloat(el.dataset.fill ?? '1');
+    el.style.setProperty('--fill', fill.toString());
+  });
+</script>

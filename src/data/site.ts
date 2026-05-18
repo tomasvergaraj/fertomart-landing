@@ -37,6 +37,46 @@ export const SOCIAL = {
   facebook: 'https://www.facebook.com/yayo.vergara',
 } as const;
 
+/**
+ * Configuración de Google Business / Maps.
+ *
+ * Cómo obtener los valores (después de validar Google Business Profile):
+ *  1. `placeId`: usar https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder
+ *     y buscar "Fertomart Hijuelas". Copiar el ID que empieza con "ChIJ…".
+ *  2. `reviewShortUrl` (más simple, recomendado): en GBP → botón "Compartir" → "Obtener URL corta".
+ *     Queda algo como https://g.page/r/XXXX/review.
+ *  3. `aggregateRating`: actualizar manualmente a medida que llegan reseñas reales.
+ *     Cuando count > 0, se agrega al schema JSON-LD (estrellas en buscador).
+ *
+ * Mientras `placeId` y `reviewShortUrl` estén vacíos, el panel de reseñas
+ * en la sección "Testimonios" no se muestra.
+ */
+export const GOOGLE = {
+  placeId: '', // ej: 'ChIJN1t_tDeuEmsRUsoyG83frY4'
+  reviewShortUrl: '', // ej: 'https://g.page/r/CXXXXX/review'
+  aggregateRating: {
+    value: 0, // ej: 4.9
+    count: 0, // ej: 23
+  },
+  // URLs derivadas — no editar a mano si tienes placeId.
+  reviewUrl(): string {
+    if (this.reviewShortUrl) return this.reviewShortUrl;
+    if (this.placeId) {
+      return `https://search.google.com/local/writereview?placeid=${this.placeId}`;
+    }
+    return '';
+  },
+  mapsUrl(): string {
+    if (this.placeId) {
+      return `https://www.google.com/maps/place/?q=place_id:${this.placeId}`;
+    }
+    return '';
+  },
+  isEnabled(): boolean {
+    return !!(this.placeId || this.reviewShortUrl);
+  },
+} as const;
+
 export const NAV_LINKS = [
   { href: '#servicios', label: 'Servicios', spy: 'servicios' },
   { href: '#nosotros', label: 'Nosotros', spy: 'nosotros' },
