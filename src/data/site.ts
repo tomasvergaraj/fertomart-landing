@@ -52,13 +52,13 @@ export const SOCIAL = {
  * en la sección "Testimonios" no se muestra.
  */
 export const GOOGLE = {
-  placeId: '', // ej: 'ChIJN1t_tDeuEmsRUsoyG83frY4'
-  reviewShortUrl: '', // ej: 'https://g.page/r/CXXXXX/review'
+  placeId: '', // ej: 'ChIJN1t_tDeuEmsRUsoyG83frY4' (opcional, mejora schema)
+  reviewShortUrl: 'https://g.page/r/CRZpja5SO1mJEAI/review',
   aggregateRating: {
-    value: 0, // ej: 4.9
+    value: 0, // ej: 4.9 — actualizar a medida que llegan reseñas reales
     count: 0, // ej: 23
   },
-  // URLs derivadas — no editar a mano si tienes placeId.
+  // URLs derivadas — no editar a mano.
   reviewUrl(): string {
     if (this.reviewShortUrl) return this.reviewShortUrl;
     if (this.placeId) {
@@ -66,9 +66,14 @@ export const GOOGLE = {
     }
     return '';
   },
+  /** URL para ver el perfil/reseñas en Google Maps. */
   mapsUrl(): string {
     if (this.placeId) {
       return `https://www.google.com/maps/place/?q=place_id:${this.placeId}`;
+    }
+    // Fallback: el short URL sin "/review" abre la ficha de GBP completa.
+    if (this.reviewShortUrl?.endsWith('/review')) {
+      return this.reviewShortUrl.replace(/\/review$/, '');
     }
     return '';
   },
