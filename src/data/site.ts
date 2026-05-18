@@ -16,7 +16,6 @@ export const SITE = {
   foundingYear: '2000',
   locale: 'es-CL',
   themeColor: '#0F0E0C',
-  rut: '76.XXX.XXX-X',
   schedule: 'Lun a Sáb · 9:00 – 20:00',
 } as const;
 
