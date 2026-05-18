@@ -55,8 +55,8 @@ export const GOOGLE = {
   placeId: '', // ej: 'ChIJN1t_tDeuEmsRUsoyG83frY4' (opcional, mejora schema)
   reviewShortUrl: 'https://g.page/r/CRZpja5SO1mJEAI/review',
   aggregateRating: {
-    value: 0, // ej: 4.9 — actualizar a medida que llegan reseñas reales
-    count: 0, // ej: 23
+    value: 5, // ej: 4.9 — actualizar a medida que llegan reseñas reales
+    count: 1, // ej: 23
   },
   // URLs derivadas — no editar a mano.
   reviewUrl(): string {
