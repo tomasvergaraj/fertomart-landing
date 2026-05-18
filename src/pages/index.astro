@@ -23,10 +23,32 @@ import Cta from '~/components/sections/Cta.astro';
 import Lightbox from '~/components/sections/Lightbox.astro';
 import WhatsAppFab from '~/components/sections/WhatsAppFab.astro';
 import Footer from '~/components/sections/Footer.astro';
-import { localBusinessSchema, faqSchemaFromCollection } from '~/lib/seo';
+import { localBusinessSchema, faqSchemaFromCollection, videoSchemasFromReels } from '~/lib/seo';
+
+import reel1 from '~/assets/reels/reel-evento-01.mp4';
+import reel2 from '~/assets/reels/reel-evento-02.mp4';
+import reel3 from '~/assets/reels/reel-evento-03.mp4';
+import reel4 from '~/assets/reels/reel-evento-04.mp4';
+import reel5 from '~/assets/reels/reel-cordero-palo.mp4';
+import reel6 from '~/assets/reels/reel-banquete.mp4';
 
 const faqs = (await getCollection('faq')).sort((a, b) => a.data.order - b.data.order);
-const schemas = [localBusinessSchema(), faqSchemaFromCollection(faqs)];
+
+// Schemas estructurados para Google Rich Results: LocalBusiness + FAQ + Videos.
+const reelMeta = [
+  { src: reel1, title: 'Coctelería para eventos' },
+  { src: reel2, title: 'Platos de entrada gourmet' },
+  { src: reel3, title: 'Montaje de mesas para banquete' },
+  { src: reel4, title: 'Eventos personalizados' },
+  { src: reel5, title: 'Cocina sobre brasas y cordero al palo' },
+  { src: reel6, title: 'Parrilladas para eventos' },
+];
+
+const schemas = [
+  localBusinessSchema(),
+  faqSchemaFromCollection(faqs),
+  ...videoSchemasFromReels(reelMeta),
+];
 ---
 
 <BaseLayout schemas={schemas}>

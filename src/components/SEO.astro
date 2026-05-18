@@ -15,7 +15,7 @@ interface Props {
 }
 
 const {
-  title = `${SITE.name} · Eventos y Banquetería en Chile | 25 años`,
+  title = `${SITE.name} · Banquetería y Eventos en Hijuelas, V Región | 25 años`,
   description = SITE.description,
   image = `${SITE.url}/og-image.jpg`,
   canonical = Astro.url.href,
@@ -28,17 +28,18 @@ const {
 <meta name="description" content={description} />
 <meta
   name="keywords"
-  content="eventos gastronómicos, banquetería Chile, servicio de banquetería, parrilla para eventos, asado para eventos, catering carnes, organización de fiestas, eventos corporativos, matrimonios, cumpleaños, Fertomart"
+  content="banquetería Hijuelas, banquetería Quillota, banquetería V Región, catering Valparaíso, cordero al palo, asado al palo a domicilio, parrilla para eventos, servicio de banquetería matrimonios, eventos corporativos Valparaíso, catering cumpleaños, Fertomart"
 />
 <meta name="author" content={SITE.legalName} />
 <meta name="robots" content="index, follow, max-image-preview:large" />
 <meta name="googlebot" content="index, follow" />
 <link rel="canonical" href={canonical} />
 
-<!-- Geo tags para SEO local -->
-<meta name="geo.region" content="CL" />
-<meta name="geo.placename" content="Chile" />
-<meta name="ICBM" content="-33.4489, -70.6693" />
+<!-- Geo tags para SEO local (Hijuelas, V Región) -->
+<meta name="geo.region" content="CL-VS" />
+<meta name="geo.placename" content="Hijuelas, Región de Valparaíso, Chile" />
+<meta name="geo.position" content="-32.835766;-71.112385" />
+<meta name="ICBM" content="-32.835766, -71.112385" />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
