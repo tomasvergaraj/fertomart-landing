@@ -1,9 +1,11 @@
 ---
 /**
- * Especialidad: carnes — sección oscura con círculo rotando.
- * El círculo solo gira cuando está en viewport (IntersectionObserver al final).
+ * Especialidad: carnes — sección oscura con video del evento real al costado.
+ * El video carga sólo cuando entra en viewport (lazy + IntersectionObserver).
  */
 import SectionHead from '~/components/ui/SectionHead.astro';
+import specialtyVideoMp4 from '~/assets/specialty-video.mp4';
+import specialtyPoster from '~/assets/specialty-poster.jpg';
 ---
 
 <section class="specialty" id="especialidad" aria-labelledby="specialty-title">
@@ -32,12 +34,26 @@ import SectionHead from '~/components/ui/SectionHead.astro';
     </div>
 
     <div class="specialty__visual reveal" aria-hidden="true">
-      <div class="specialty__circle">
-        <span class="specialty__years">25</span>
-        <span class="specialty__years-label">años<br />cocinando<br />tradición</span>
+      <div
+        class="specialty__video-frame"
+        style={`--poster-bg: url(${specialtyPoster.src})`}
+      >
+        <video
+          class="specialty__video"
+          muted
+          loop
+          playsinline
+          preload="none"
+          poster={specialtyPoster.src}
+          data-specialty-video
+        >
+          <source src={specialtyVideoMp4} type="video/mp4" />
+        </video>
+        <span class="specialty__badge">
+          <span class="specialty__badge-num">25</span>
+          <span class="specialty__badge-label">años</span>
+        </span>
       </div>
-      <div class="specialty__deco specialty__deco--1"></div>
-      <div class="specialty__deco specialty__deco--2"></div>
     </div>
   </div>
 </section>
@@ -98,65 +114,65 @@ import SectionHead from '~/components/ui/SectionHead.astro';
   }
   .specialty__visual {
     position: relative;
-    width: min(100%, 340px);
-    aspect-ratio: 1 / 1;
+    width: min(100%, 440px);
     margin: 2.5rem auto 1rem;
     justify-self: center;
   }
-  .specialty__circle {
+  .specialty__video-frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow:
+      0 30px 60px -25px rgba(0, 0, 0, 0.65),
+      0 0 0 1px rgba(201, 169, 97, 0.25);
+  }
+  .specialty__video-frame::before {
+    content: '';
     position: absolute;
     inset: 0;
-    border: 1px solid var(--color-gold);
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent 55%, rgba(15, 14, 12, 0.55) 100%);
+  }
+  .specialty__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    filter: contrast(1.08) saturate(1.15) brightness(0.94);
+  }
+  .specialty__badge {
+    position: absolute;
+    z-index: 3;
+    bottom: -22px;
+    right: -22px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--color-wine) 0%, #4a121a 100%);
+    border: 1px solid var(--color-gold);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    background: radial-gradient(circle, rgba(122, 31, 43, 0.3) 0%, transparent 70%);
+    box-shadow: 0 20px 40px -15px rgba(122, 31, 43, 0.6);
   }
-  .specialty__years {
+  .specialty__badge-num {
     font-family: var(--font-serif);
-    font-size: clamp(5rem, 18vw, 9rem);
-    font-weight: 300;
-    line-height: 1;
-    color: var(--color-gold);
+    font-size: 2.5rem;
     font-style: italic;
+    font-weight: 300;
+    color: var(--color-gold);
+    line-height: 1;
   }
-  .specialty__years-label {
-    font-size: 0.75rem;
+  .specialty__badge-label {
+    font-size: 0.65rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    text-align: center;
-    line-height: 1.6;
-    color: rgba(244, 233, 216, 0.7);
-  }
-  .specialty__deco {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid var(--color-gold);
-    opacity: 0.3;
-  }
-  .specialty__deco--1 {
-    inset: -20px;
-    border-style: dashed;
-    animation: rotate 60s linear infinite;
-    animation-play-state: paused;
-  }
-  .specialty.is-in-view .specialty__deco--1 {
-    animation-play-state: running;
-  }
-  .specialty__deco--2 {
-    inset: -45px;
-    opacity: 0.15;
-  }
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+    color: rgba(244, 233, 216, 0.85);
+    margin-top: 0.35rem;
   }
   @media (min-width: 960px) {
     .specialty__inner {
@@ -167,23 +183,49 @@ import SectionHead from '~/components/ui/SectionHead.astro';
     .specialty__visual {
       margin: 0;
       width: 100%;
-      max-width: 420px;
+      max-width: 460px;
       justify-self: end;
+    }
+    .specialty__badge {
+      width: 130px;
+      height: 130px;
+      bottom: -28px;
+      right: -28px;
+    }
+    .specialty__badge-num {
+      font-size: 3rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .specialty__video {
+      display: none;
+    }
+    .specialty__video-frame {
+      background-image: var(--poster-bg);
+      background-size: cover;
+      background-position: center;
     }
   }
 </style>
 
 <script>
-  // Pausa la rotación cuando la sección no está visible para ahorrar CPU.
+  // El video se carga y reproduce sólo cuando la sección entra al viewport;
+  // se pausa al salir para ahorrar CPU/datos.
   const specialty = document.querySelector<HTMLElement>('.specialty');
-  if (specialty && 'IntersectionObserver' in window) {
+  const video = document.querySelector<HTMLVideoElement>('[data-specialty-video]');
+  if (specialty && video && 'IntersectionObserver' in window) {
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           specialty.classList.toggle('is-in-view', entry.isIntersecting);
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
         });
       },
-      { threshold: 0.05 }
+      { threshold: 0.15 }
     );
     obs.observe(specialty);
   }

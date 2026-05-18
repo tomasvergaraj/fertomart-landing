@@ -1,33 +1,27 @@
 ---
 /**
- * Hero principal full-screen con video de fondo (recorrido de evento real).
- * - Video MP4 (H.264) optimizado, autoplay/muted/loop/playsinline para iOS.
- * - Poster JPG como fallback durante carga / prefers-reduced-motion.
- * - Overlay oscuro para legibilidad sobre cualquier frame del video.
+ * Hero principal full-screen con imagen de fondo de un evento real.
+ * - Imagen optimizada vía astro:assets (webp/avif, srcset responsive)
+ * - Overlay oscuro para legibilidad del título sobre la foto
+ * - Grano sutil para textura cinematográfica
  */
+import { Image } from 'astro:assets';
 import Icon from '~/components/ui/Icon.astro';
 import { CONTACT } from '~/data/site';
-import heroVideoMp4 from '~/assets/hero-video.mp4';
-import heroPoster from '~/assets/hero-poster.jpg';
+import heroImg from '~/assets/events/hero.jpg';
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div
-    class="hero__media"
-    aria-hidden="true"
-    style={`background-image: url(${heroPoster.src})`}
-  >
-    <video
-      class="hero__video"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="metadata"
-      poster={heroPoster.src}
-    >
-      <source src={heroVideoMp4} type="video/mp4" />
-    </video>
+  <div class="hero__media" aria-hidden="true">
+    <Image
+      src={heroImg}
+      alt=""
+      class="hero__img"
+      widths={[768, 1280, 1920, 2560]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
     <div class="hero__overlay"></div>
     <div class="hero__grain"></div>
   </div>
@@ -94,18 +88,13 @@ import heroPoster from '~/assets/hero-poster.jpg';
     inset: 0;
     z-index: -1;
     background-color: #0f0e0c;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
   }
-  .hero__video {
+  .hero__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
     display: block;
-    /* Aumenta contraste y saturación para compensar la baja resolución del fuente */
-    filter: contrast(1.08) saturate(1.15) brightness(0.94);
   }
   .hero__overlay {
     position: absolute;
@@ -245,10 +234,5 @@ import heroPoster from '~/assets/hero-poster.jpg';
     letter-spacing: 0.02em;
   }
 
-  /* Accesibilidad: motion reducido oculta el video; el poster (background-image inline) queda visible */
-  @media (prefers-reduced-motion: reduce) {
-    .hero__video {
-      display: none;
-    }
-  }
+
 </style>
